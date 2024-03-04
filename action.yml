@@ -1,0 +1,28 @@
+name: 'Template output'
+description: 'Renders a template string using ETA syntax into a text output.'
+author: '@simonjur'
+
+# Add your action's branding here. This will appear on the GitHub Marketplace.
+branding:
+  icon: 'heart'
+  color: 'red'
+
+inputs:
+  template:
+    description: 'Template string to render. Supports ETA syntax.'
+    required: true
+  varName:
+    description: 'Name of the variable which holds all data to be used in the template (variables)'
+    required: false
+    default: 'it'
+  variables:
+    description: 'Variables to substitute in the template. You can use YAML, JSON or dotenv format.'
+    required: false
+
+outputs:
+  text:
+    description: 'Rendered template string'
+
+runs:
+  using: node20
+  main: dist/index.js
