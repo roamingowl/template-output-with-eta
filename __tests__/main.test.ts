@@ -91,4 +91,23 @@ describe('action', () => {
     expect(setOutputMock).toHaveBeenNthCalledWith(1, 'text', expect.stringMatching('Hi, Joe!'));
     expect(errorMock).not.toHaveBeenCalled();
   });
+
+  it('render template from file', async () => {
+    // Set the action's inputs as return values from core.getInput()
+    getInputMock.mockImplementation(name => {
+      switch (name) {
+        case 'template':
+          return './examples/simple.eta';
+        case 'variables':
+          return '{"name": "John"}';
+        default:
+          return '';
+      }
+    });
+
+    await main.run();
+
+    expect(setOutputMock).toHaveBeenNthCalledWith(1, 'text', expect.stringMatching('Hi John!'));
+    expect(errorMock).not.toHaveBeenCalled();
+  });
 });
