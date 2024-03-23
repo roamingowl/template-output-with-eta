@@ -3,6 +3,7 @@ import { Eta } from 'eta';
 import YAML from 'yaml';
 import dotenv from 'dotenv';
 import * as fs from 'fs';
+import dateFns from 'date-fns';
 
 /**
  * The main function for the action.
@@ -51,13 +52,18 @@ export async function run(): Promise<void> {
         core.error('Unable ot parse variables as JSON or YAML');
       }
     }
-    const eta = new Eta({ varName });
+    const eta = new Eta({ varName, functionHeader: 'const utils = it._utilsInternal' });
 
     if (fs.existsSync(template)) {
       template = fs.readFileSync(template, 'utf8');
     }
 
-    const renderedTemplate = eta.renderString(template, { ...parsedVariables });
+    const templateVariables = {
+      ...parsedVariables,
+      _utilsInternal: { dateFns }
+    };
+
+    const renderedTemplate = eta.renderString(template, templateVariables);
 
     core.setOutput('text', renderedTemplate);
   } catch (error) {
