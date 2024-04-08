@@ -3,7 +3,7 @@ import { Eta } from 'eta';
 import YAML from 'yaml';
 import dotenv from 'dotenv';
 import * as fs from 'fs';
-import dateFns from 'date-fns';
+import * as dateFns from 'date-fns';
 import { UTCDateMini } from '@date-fns/utc';
 
 /**
