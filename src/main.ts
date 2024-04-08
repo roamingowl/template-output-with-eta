@@ -4,6 +4,7 @@ import YAML from 'yaml';
 import dotenv from 'dotenv';
 import * as fs from 'fs';
 import dateFns from 'date-fns';
+import { UTCDateMini } from '@date-fns/utc';
 
 /**
  * The main function for the action.
@@ -51,7 +52,10 @@ export async function run(): Promise<void> {
         core.error('Unable ot parse variables as JSON or YAML');
       }
     }
-    const eta = new Eta({ varName, functionHeader: 'const utils = it._utilsInternal' });
+    const eta = new Eta({
+      varName,
+      functionHeader: 'const utils = it._utilsInternal; const UTCDateMini = utils.UTCDateMini;'
+    });
 
     if (fs.existsSync(template)) {
       template = fs.readFileSync(template, 'utf8');
@@ -59,7 +63,7 @@ export async function run(): Promise<void> {
 
     const templateVariables = {
       ...parsedVariables,
-      _utilsInternal: { dateFns }
+      _utilsInternal: { dateFns, UTCDateMini }
     };
 
     const renderedTemplate = eta.renderString(template, templateVariables);

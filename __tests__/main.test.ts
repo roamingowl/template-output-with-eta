@@ -174,7 +174,7 @@ describe('action', () => {
       getInputMock.mockImplementation(name => {
         switch (name) {
           case 'template':
-            return 'Formatted date is <%= utils.dateFns.format(new Date(it.timestamp * 1000), "MM/dd/yyyy HH:mm:ss") %>';
+            return 'Formatted date is <%= utils.dateFns.format(new UTCDateMini(it.timestamp * 1000), "MM/dd/yyyy HH:mm:ss") %>';
           case 'variables':
             return 'timestamp=1711187861';
           default:
@@ -187,7 +187,7 @@ describe('action', () => {
       expect(setOutputMock).toHaveBeenNthCalledWith(
         1,
         'text',
-        expect.stringMatching('Formatted date is 03/23/2024 10:57:41')
+        expect.stringMatching('Formatted date is 03/23/2024 09:57:41')
       );
       expect(errorMock).not.toHaveBeenCalled();
     });
