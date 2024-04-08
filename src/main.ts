@@ -40,11 +40,10 @@ export async function run(): Promise<void> {
       }
 
       if (typeof parsedVariables !== 'object') {
-        try {
-          parsedVariables = dotenv.parse(Buffer.from(variables, 'utf8'));
-          core.debug('Variables parsed as dotenv');
-        } catch {
-          // If the dotenv parse fails, log an error
+        parsedVariables = dotenv.parse(Buffer.from(variables, 'utf8'));
+        if (typeof parsedVariables === 'object' && Object.keys(parsedVariables).length === 0) {
+          core.debug('No variables found by dotenv');
+          parsedVariables = undefined;
         }
       }
 

@@ -1,4 +1,4 @@
-name: 'Render template output'
+name: 'Render template output with eta'
 description: 'Renders a template string using ETA syntax into a text output.'
 author: '@roamingowl'
 

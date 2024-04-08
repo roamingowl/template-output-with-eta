@@ -36,6 +36,27 @@ describe('action', () => {
     setOutputMock = jest.spyOn(core, 'setOutput').mockImplementation();
   });
 
+  describe('fail to parse variables', () => {
+    it('should end with error message if variables are not valid JSON, YAML or dotenv', async () => {
+      // Set the action's inputs as return values from core.getInput()
+      getInputMock.mockImplementation(name => {
+        switch (name) {
+          case 'template':
+            return 'this is a template';
+          case 'variables':
+            return 'jibberish';
+          default:
+            return '';
+        }
+      });
+
+      await main.run();
+
+      expect(errorMock).toHaveBeenCalledWith('Unable ot parse variables as JSON or YAML');
+      expect(setFailedMock).not.toHaveBeenCalled();
+    });
+  });
+
   const TEMPLATE = 'Hi, <%= it.name %>! You are <%= it.age %> years old.';
 
   describe('render template with variables', () => {
@@ -81,7 +102,11 @@ describe('action', () => {
 
       await main.run();
 
-      expect(setOutputMock).toHaveBeenNthCalledWith(1, 'text', expect.stringMatching('Hi, John! You are 25 years old.'));
+      expect(setOutputMock).toHaveBeenNthCalledWith(
+        1,
+        'text',
+        expect.stringMatching('Hi, John! You are 25 years old.')
+      );
       expect(errorMock).not.toHaveBeenCalled();
     });
 
@@ -125,6 +150,25 @@ describe('action', () => {
     expect(errorMock).not.toHaveBeenCalled();
   });
 
+  it("if template from doesnt exist, don't fail", async () => {
+    // Set the action's inputs as return values from core.getInput()
+    getInputMock.mockImplementation(name => {
+      switch (name) {
+        case 'template':
+          return './dummy_file.eta';
+        case 'variables':
+          return '{"name": "John"}';
+        default:
+          return '';
+      }
+    });
+
+    await main.run();
+
+    expect(setOutputMock).toHaveBeenCalledWith('text', './dummy_file.eta');
+    expect(errorMock).not.toHaveBeenCalled();
+  });
+
   describe('render using date-fns from utils', () => {
     it('should render formatted date', async () => {
       getInputMock.mockImplementation(name => {
@@ -140,7 +184,11 @@ describe('action', () => {
 
       await main.run();
 
-      expect(setOutputMock).toHaveBeenNthCalledWith(1, 'text', expect.stringMatching('Formatted date is 03/23/2024 10:57:41'));
+      expect(setOutputMock).toHaveBeenNthCalledWith(
+        1,
+        'text',
+        expect.stringMatching('Formatted date is 03/23/2024 10:57:41')
+      );
       expect(errorMock).not.toHaveBeenCalled();
     });
   });
