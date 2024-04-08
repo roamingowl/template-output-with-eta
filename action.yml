@@ -1,23 +1,27 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Render template output with eta'
+description: 'Renders a template string using ETA syntax into a text output.'
+author: '@roamingowl'
 
 # Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
   icon: 'heart'
   color: 'red'
 
-# Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  template:
+    description: 'Template string to render or a path to file with template. Supports ETA syntax.'
     required: true
-    default: '1000'
+  varName:
+    description: 'Name of the variable which holds all data to be used in the template (variables)'
+    required: false
+    default: 'it'
+  variables:
+    description: 'Variables to substitute in the template. You can use YAML, JSON or dotenv format.'
+    required: false
 
-# Define your outputs here.
 outputs:
-  time:
-    description: 'Your output description here'
+  text:
+    description: 'Rendered template string'
 
 runs:
   using: node20

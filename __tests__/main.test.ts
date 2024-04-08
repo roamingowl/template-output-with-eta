@@ -6,84 +6,190 @@
  * variables following the pattern `INPUT_<INPUT_NAME>`.
  */
 
-import * as core from '@actions/core'
-import * as main from '../src/main'
+import * as core from '@actions/core';
+import * as main from '../src/main';
 
 // Mock the action's main function
-const runMock = jest.spyOn(main, 'run')
-
-// Other utilities
-const timeRegex = /^\d{2}:\d{2}:\d{2}/
+// const runMock = jest.spyOn(main, 'run');
 
 // Mock the GitHub Actions core library
-let debugMock: jest.SpiedFunction<typeof core.debug>
-let errorMock: jest.SpiedFunction<typeof core.error>
-let getInputMock: jest.SpiedFunction<typeof core.getInput>
-let setFailedMock: jest.SpiedFunction<typeof core.setFailed>
-let setOutputMock: jest.SpiedFunction<typeof core.setOutput>
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+let debugMock: jest.SpiedFunction<typeof core.debug>;
+let errorMock: jest.SpiedFunction<typeof core.error>;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+let warnMock: jest.SpiedFunction<typeof core.error>;
+let getInputMock: jest.SpiedFunction<typeof core.getInput>;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+let setFailedMock: jest.SpiedFunction<typeof core.setFailed>;
+let setOutputMock: jest.SpiedFunction<typeof core.setOutput>;
 
 describe('action', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    jest.clearAllMocks();
 
-    debugMock = jest.spyOn(core, 'debug').mockImplementation()
-    errorMock = jest.spyOn(core, 'error').mockImplementation()
-    getInputMock = jest.spyOn(core, 'getInput').mockImplementation()
-    setFailedMock = jest.spyOn(core, 'setFailed').mockImplementation()
-    setOutputMock = jest.spyOn(core, 'setOutput').mockImplementation()
-  })
+    debugMock = jest.spyOn(core, 'debug').mockImplementation();
+    errorMock = jest.spyOn(core, 'error').mockImplementation();
+    warnMock = jest.spyOn(core, 'warning').mockImplementation();
+    getInputMock = jest.spyOn(core, 'getInput').mockImplementation();
+    setFailedMock = jest.spyOn(core, 'setFailed').mockImplementation();
+    setOutputMock = jest.spyOn(core, 'setOutput').mockImplementation();
+  });
 
-  it('sets the time output', async () => {
+  describe('fail to parse variables', () => {
+    it('should end with error message if variables are not valid JSON, YAML or dotenv', async () => {
+      // Set the action's inputs as return values from core.getInput()
+      getInputMock.mockImplementation(name => {
+        switch (name) {
+          case 'template':
+            return 'this is a template';
+          case 'variables':
+            return 'jibberish';
+          default:
+            return '';
+        }
+      });
+
+      await main.run();
+
+      expect(errorMock).toHaveBeenCalledWith('Unable ot parse variables as JSON or YAML');
+      expect(setFailedMock).not.toHaveBeenCalled();
+    });
+  });
+
+  const TEMPLATE = 'Hi, <%= it.name %>! You are <%= it.age %> years old.';
+
+  describe('render template with variables', () => {
+    it('YAML variables', async () => {
+      // Set the action's inputs as return values from core.getInput()
+      getInputMock.mockImplementation(name => {
+        switch (name) {
+          case 'template':
+            return TEMPLATE;
+          case 'variables':
+            return `name: Josh
+                    age: 30`;
+          case 'var_name':
+            return 'it';
+          default:
+            return '';
+        }
+      });
+
+      await main.run();
+
+      expect(setOutputMock).toHaveBeenNthCalledWith(
+        1,
+        'text',
+        expect.stringMatching('Hi, Josh! You are 30 years old.')
+      );
+      expect(errorMock).not.toHaveBeenCalled();
+    });
+
+    it('JSON variables', async () => {
+      // Set the action's inputs as return values from core.getInput()
+      getInputMock.mockImplementation(name => {
+        switch (name) {
+          case 'template':
+            return TEMPLATE;
+          case 'variables':
+            return `{"name": "John", 
+            "age": 25}`;
+          default:
+            return '';
+        }
+      });
+
+      await main.run();
+
+      expect(setOutputMock).toHaveBeenNthCalledWith(
+        1,
+        'text',
+        expect.stringMatching('Hi, John! You are 25 years old.')
+      );
+      expect(errorMock).not.toHaveBeenCalled();
+    });
+
+    it('dotenv variables', async () => {
+      // Set the action's inputs as return values from core.getInput()
+      getInputMock.mockImplementation(name => {
+        switch (name) {
+          case 'template':
+            return TEMPLATE;
+          case 'variables':
+            return `name=Joe
+            age=30`;
+          default:
+            return '';
+        }
+      });
+
+      await main.run();
+
+      expect(setOutputMock).toHaveBeenNthCalledWith(1, 'text', expect.stringMatching('Hi, Joe! You are 30 years old.'));
+      expect(errorMock).not.toHaveBeenCalled();
+    });
+  });
+
+  it('render template from file', async () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'milliseconds':
-          return '500'
+        case 'template':
+          return './examples/simple.eta';
+        case 'variables':
+          return '{"name": "John"}';
         default:
-          return ''
+          return '';
       }
-    })
+    });
 
-    await main.run()
-    expect(runMock).toHaveReturned()
+    await main.run();
 
-    // Verify that all of the core library functions were called correctly
-    expect(debugMock).toHaveBeenNthCalledWith(1, 'Waiting 500 milliseconds ...')
-    expect(debugMock).toHaveBeenNthCalledWith(
-      2,
-      expect.stringMatching(timeRegex)
-    )
-    expect(debugMock).toHaveBeenNthCalledWith(
-      3,
-      expect.stringMatching(timeRegex)
-    )
-    expect(setOutputMock).toHaveBeenNthCalledWith(
-      1,
-      'time',
-      expect.stringMatching(timeRegex)
-    )
-    expect(errorMock).not.toHaveBeenCalled()
-  })
+    expect(setOutputMock).toHaveBeenNthCalledWith(1, 'text', expect.stringMatching('Hi John!'));
+    expect(errorMock).not.toHaveBeenCalled();
+  });
 
-  it('sets a failed status', async () => {
+  it("if template from doesnt exist, don't fail", async () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'milliseconds':
-          return 'this is not a number'
+        case 'template':
+          return './dummy_file.eta';
+        case 'variables':
+          return '{"name": "John"}';
         default:
-          return ''
+          return '';
       }
-    })
+    });
 
-    await main.run()
-    expect(runMock).toHaveReturned()
+    await main.run();
 
-    // Verify that all of the core library functions were called correctly
-    expect(setFailedMock).toHaveBeenNthCalledWith(
-      1,
-      'milliseconds not a number'
-    )
-    expect(errorMock).not.toHaveBeenCalled()
-  })
-})
+    expect(setOutputMock).toHaveBeenCalledWith('text', './dummy_file.eta');
+    expect(errorMock).not.toHaveBeenCalled();
+  });
+
+  describe('render using date-fns from utils', () => {
+    it('should render formatted date', async () => {
+      getInputMock.mockImplementation(name => {
+        switch (name) {
+          case 'template':
+            return 'Formatted date is <%= utils.dateFns.format(new UTCDateMini(it.timestamp * 1000), "MM/dd/yyyy HH:mm:ss") %>';
+          case 'variables':
+            return 'timestamp=1711187861';
+          default:
+            return '';
+        }
+      });
+
+      await main.run();
+
+      expect(setOutputMock).toHaveBeenNthCalledWith(
+        1,
+        'text',
+        expect.stringMatching('Formatted date is 03/23/2024 09:57:41')
+      );
+      expect(errorMock).not.toHaveBeenCalled();
+    });
+  });
+});
