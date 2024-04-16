@@ -29,7 +29,7 @@ Example formatting timestamp:
 ```yaml
 steps:
   - name: Render template with formatted date
-    uses: roamingowl/template-output@v1
+    uses: roamingowl/template-output-with-eta@v1
     with:
       template: |
         Formatted date is <%= utils.dateFns.format(new UTCDateMini(it.timestamp * 1000), "MM/dd/yyyy HH:mm:ss") %>
@@ -48,7 +48,7 @@ Variables in YAML format:
 ```yaml
 steps:
   - name: Render simple template with variables in YAML format
-    uses: roamingowl/template-output@v1
+    uses: roamingowl/template-output-with-eta@v1
     with:
       template: |
         <%= it.what %> this is <%= it.name %>
@@ -61,7 +61,7 @@ Variables in JSON format:
 ```yaml
 steps:
   - name: Render simple template with variables in JSON format
-    uses: roamingowl/template-output@v1
+    uses: roamingowl/template-output-with-eta@v1
     with:
       template: |
         <%= it.what %> this is <%= it.name %>
@@ -73,7 +73,7 @@ Variables in dotenv format:
 ```yaml
 steps:
   - name: Render simple template with variables in JSON format
-    uses: roamingowl/template-output@v1
+    uses: roamingowl/template-output-with-eta@v1
     with:
       template: |
         <%= it.WHAT %> this is <%= it.NAME %>
@@ -86,7 +86,7 @@ Load template from file:
 ```yaml
 steps:
   - name: Render simple template from file
-    uses: roamingowl/template-output@v1
+    uses: roamingowl/template-output-with-eta@v1
     with:
       template: ./template.txt
       variables: |
@@ -98,7 +98,7 @@ Print date difference between two timestamps in minutes:
 ```yaml
 steps:
   - name: Render difference between two timestamps in minutes
-    uses: roamingowl/template-output@v1
+    uses: roamingowl/template-output-with-eta@v1
     with:
       template: |
         The difference is <%= Math.abs(utils.dateFns.differenceInMinutes(new Date(it.t1 * 1000), new Date(it.t2 * 1000))) %> minutes
