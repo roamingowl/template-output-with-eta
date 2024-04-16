@@ -2,7 +2,7 @@
 
 [![GitHub Super-Linter](https://github.com/roamingowl/template-output/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
 ![CI](https://github.com/roamingowl/template-output/actions/workflows/ci.yml/badge.svg)
-[![CodeQL](https://github.com/roamingowl/template-output/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/actions/typescript-action/actions/workflows/codeql-analysis.yml)
+[![CodeQL](https://github.com/roamingowl/template-output/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/roamingowl/template-output/actions/workflows/codeql-analysis.yml)
 [![Coverage](./badges/coverage.svg)](./badges/coverage.svg)
 
 Node.js action that renders string template into an output variable using [ETA library](https://eta.js.org/). 
