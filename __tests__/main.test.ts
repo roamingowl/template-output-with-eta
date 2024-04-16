@@ -191,5 +191,24 @@ describe('action', () => {
       );
       expect(errorMock).not.toHaveBeenCalled();
     });
+
+    it('should render difference between two timestamps in minutes', async () => {
+      getInputMock.mockImplementation(name => {
+        switch (name) {
+          case 'template':
+            return 'The difference is <%= Math.abs(utils.dateFns.differenceInMinutes(new Date(it.t1 * 1000), new Date(it.t2 * 1000))) %> minutes';
+          case 'variables':
+            return `t1=1711187861
+            t2=1711188041`;
+          default:
+            return '';
+        }
+      });
+
+      await main.run();
+
+      expect(setOutputMock).toHaveBeenNthCalledWith(1, 'text', expect.stringMatching('The difference is 3 minutes'));
+      expect(errorMock).not.toHaveBeenCalled();
+    });
   });
 });
