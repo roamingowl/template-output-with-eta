@@ -5,9 +5,9 @@
 [![CodeQL](https://github.com/roamingowl/template-output/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/roamingowl/template-output/actions/workflows/codeql-analysis.yml)
 [![Coverage](./badges/coverage.svg)](./badges/coverage.svg)
 
-Node.js action that renders string template into an output variable using [ETA library](https://eta.js.org/). 
-
-## Inputs
+Node.js action that renders string template into an output variable using [ETA library](https://eta.js.org/).  
+  
+## Inputs  
 Mandatory:  
 `template` [string]: Template string to render (Supports [ETA](https://eta.js.org/) syntax). Or a path to file containing template.
 
