@@ -29,7 +29,7 @@
     "coverage": "jest --coverage && make-coverage-badge --output-path ./badges/coverage.svg",
     "format:write": "prettier --write **/*.ts",
     "format:check": "prettier --check **/*.ts",
-    "lint": "npx eslint . -c .eslintrc.yml",
+    "lint": "eslint . -c .eslintrc.yml",
     "package": "esbuild src/index.ts --bundle --platform=node --target=node20 --outfile=dist/index.js",
     "build-license": "generate-license-file --input package.json --output dist/licenses.txt --overwrite",
     "package:watch": "npm run package -- --watch",
