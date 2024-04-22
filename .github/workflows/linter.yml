@@ -42,4 +42,4 @@ jobs:
       - name: Perettier
         shell: bash
         run: |
-          npm run prettier
+          npm run format:check
