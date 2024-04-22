@@ -16,6 +16,25 @@ Optional:
 
 `varName` [string]: Name of the variable which holds all data to be used in the template (variables). Default: `it`.
 
+## Outputs
+`output` [string]: Rendered template.
+
+USage example:
+```yaml
+      - name: Render some template
+        id: test-action
+        uses: roamingowl/template-output-with-eta@v1
+        with:
+          template: |
+            hi this is <%= it.what %>
+          variables: |
+            what: 'a test'
+
+      - name: Print Output
+        id: output
+        run: echo "${{ steps.test-action.outputs.text }}"
+```
+
 ## Enhancements
 You can use functions from [date-fns](https://date-fns.org/) library to format dates inside the template.
 Use any function with utils.dateFns prefix. For example, to format date you can use `utils.dateFns.format(it.date, "MM/dd/yyyy HH:mm:ss")`.
