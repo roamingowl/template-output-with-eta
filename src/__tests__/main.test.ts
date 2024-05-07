@@ -1,13 +1,5 @@
-/**
- * Unit tests for the action's main functionality, src/main.ts
- *
- * These should be run as if the action was called from a workflow.
- * Specifically, the inputs listed in `action.yml` should be set as environment
- * variables following the pattern `INPUT_<INPUT_NAME>`.
- */
-
 import * as core from '@actions/core';
-import * as main from '../src/main';
+import { run } from '../main';
 
 // Mock the action's main function
 // const runMock = jest.spyOn(main, 'run');
@@ -38,7 +30,6 @@ describe('action', () => {
 
   describe('fail to parse variables', () => {
     it('should end with error message if variables are not valid JSON, YAML or dotenv', async () => {
-      // Set the action's inputs as return values from core.getInput()
       getInputMock.mockImplementation(name => {
         switch (name) {
           case 'template':
@@ -50,7 +41,7 @@ describe('action', () => {
         }
       });
 
-      await main.run();
+      await run();
 
       expect(errorMock).toHaveBeenCalledWith('Unable ot parse variables as JSON or YAML');
       expect(setFailedMock).not.toHaveBeenCalled();
@@ -76,7 +67,7 @@ describe('action', () => {
         }
       });
 
-      await main.run();
+      await run();
 
       expect(setOutputMock).toHaveBeenNthCalledWith(
         1,
@@ -100,7 +91,7 @@ describe('action', () => {
         }
       });
 
-      await main.run();
+      await run();
 
       expect(setOutputMock).toHaveBeenNthCalledWith(
         1,
@@ -124,7 +115,7 @@ describe('action', () => {
         }
       });
 
-      await main.run();
+      await run();
 
       expect(setOutputMock).toHaveBeenNthCalledWith(1, 'text', expect.stringMatching('Hi, Joe! You are 30 years old.'));
       expect(errorMock).not.toHaveBeenCalled();
@@ -144,7 +135,7 @@ describe('action', () => {
       }
     });
 
-    await main.run();
+    await run();
 
     expect(setOutputMock).toHaveBeenNthCalledWith(1, 'text', expect.stringMatching('Hi John!'));
     expect(errorMock).not.toHaveBeenCalled();
@@ -163,7 +154,7 @@ describe('action', () => {
       }
     });
 
-    await main.run();
+    await run();
 
     expect(setOutputMock).toHaveBeenCalledWith('text', './dummy_file.eta');
     expect(errorMock).not.toHaveBeenCalled();
@@ -182,7 +173,7 @@ describe('action', () => {
         }
       });
 
-      await main.run();
+      await run();
 
       expect(setOutputMock).toHaveBeenNthCalledWith(
         1,
@@ -205,7 +196,7 @@ describe('action', () => {
         }
       });
 
-      await main.run();
+      await run();
 
       expect(setOutputMock).toHaveBeenNthCalledWith(1, 'text', expect.stringMatching('The difference is 3 minutes'));
       expect(errorMock).not.toHaveBeenCalled();
