@@ -22462,6 +22462,7 @@ var require_resolve_props = __commonJS({
       let hasNewline = false;
       let hasNewlineAfterProp = false;
       let reqSpace = false;
+      let tab = null;
       let anchor = null;
       let tag = null;
       let comma = null;
@@ -22473,10 +22474,17 @@ var require_resolve_props = __commonJS({
             onError(token.offset, "MISSING_CHAR", "Tags and anchors must be separated from the next token by white space");
           reqSpace = false;
         }
+        if (tab) {
+          if (token.type !== "comment") {
+            onError(tab, "TAB_AS_INDENT", "Tabs are not allowed as indentation");
+          }
+          tab = null;
+        }
         switch (token.type) {
           case "space":
-            if (!flow && atNewline && indicator !== "doc-start" && token.source[0] === "	")
-              onError(token, "TAB_AS_INDENT", "Tabs are not allowed as indentation");
+            if (!flow && atNewline && (indicator !== "doc-start" || next?.type !== "flow-collection") && token.source[0] === "	") {
+              tab = token;
+            }
             hasSpace = true;
             break;
           case "comment": {
@@ -22554,8 +22562,11 @@ var require_resolve_props = __commonJS({
       }
       const last = tokens[tokens.length - 1];
       const end = last ? last.offset + last.source.length : offset;
-      if (reqSpace && next && next.type !== "space" && next.type !== "newline" && next.type !== "comma" && (next.type !== "scalar" || next.source !== ""))
+      if (reqSpace && next && next.type !== "space" && next.type !== "newline" && next.type !== "comma" && (next.type !== "scalar" || next.source !== "")) {
         onError(next.offset, "MISSING_CHAR", "Tags and anchors must be separated from the next token by white space");
+      }
+      if (tab)
+        onError(tab, "TAB_AS_INDENT", "Tabs are not allowed as indentation");
       return {
         comma,
         found,
@@ -24352,11 +24363,11 @@ var require_lexer = __commonJS({
           return false;
       }
     }
-    var hexDigits = "0123456789ABCDEFabcdef".split("");
-    var tagChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-#;/?:@&=+$_.!~*'()".split("");
-    var invalidFlowScalarChars = ",[]{}".split("");
-    var invalidAnchorChars = " ,[]{}\n\r	".split("");
-    var isNotAnchorChar = (ch) => !ch || invalidAnchorChars.includes(ch);
+    var hexDigits = new Set("0123456789ABCDEFabcdef");
+    var tagChars = new Set("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-#;/?:@&=+$_.!~*'()");
+    var flowIndicatorChars = new Set(",[]{}");
+    var invalidAnchorChars = new Set(" ,[]{}\n\r	");
+    var isNotAnchorChar = (ch) => !ch || invalidAnchorChars.has(ch);
     var Lexer = class {
       constructor() {
         this.atEnd = false;
@@ -24734,8 +24745,9 @@ var require_lexer = __commonJS({
         if (indent >= this.indentNext) {
           if (this.blockScalarIndent === -1)
             this.indentNext = indent;
-          else
-            this.indentNext += this.blockScalarIndent;
+          else {
+            this.indentNext = this.blockScalarIndent + (this.indentNext === 0 ? 1 : this.indentNext);
+          }
           do {
             const cs = this.continueScalar(nl + 1);
             if (cs === -1)
@@ -24775,7 +24787,7 @@ var require_lexer = __commonJS({
         while (ch = this.buffer[++i]) {
           if (ch === ":") {
             const next = this.buffer[i + 1];
-            if (isEmpty(next) || inFlow && next === ",")
+            if (isEmpty(next) || inFlow && flowIndicatorChars.has(next))
               break;
             end = i;
           } else if (isEmpty(ch)) {
@@ -24788,7 +24800,7 @@ var require_lexer = __commonJS({
               } else
                 end = i;
             }
-            if (next === "#" || inFlow && invalidFlowScalarChars.includes(next))
+            if (next === "#" || inFlow && flowIndicatorChars.has(next))
               break;
             if (ch === "\n") {
               const cs = this.continueScalar(i + 1);
@@ -24797,7 +24809,7 @@ var require_lexer = __commonJS({
               i = Math.max(i, cs - 2);
             }
           } else {
-            if (inFlow && invalidFlowScalarChars.includes(ch))
+            if (inFlow && flowIndicatorChars.has(ch))
               break;
             end = i;
           }
@@ -24837,7 +24849,7 @@ var require_lexer = __commonJS({
           case ":": {
             const inFlow = this.flowLevel > 0;
             const ch1 = this.charAt(1);
-            if (isEmpty(ch1) || inFlow && invalidFlowScalarChars.includes(ch1)) {
+            if (isEmpty(ch1) || inFlow && flowIndicatorChars.has(ch1)) {
               if (!inFlow)
                 this.indentNext = this.indentValue + 1;
               else if (this.flowKey)
@@ -24859,9 +24871,9 @@ var require_lexer = __commonJS({
           let i = this.pos + 1;
           let ch = this.buffer[i];
           while (ch) {
-            if (tagChars.includes(ch))
+            if (tagChars.has(ch))
               ch = this.buffer[++i];
-            else if (ch === "%" && hexDigits.includes(this.buffer[i + 1]) && hexDigits.includes(this.buffer[i + 2])) {
+            else if (ch === "%" && hexDigits.has(this.buffer[i + 1]) && hexDigits.has(this.buffer[i + 2])) {
               ch = this.buffer[i += 3];
             } else
               break;
@@ -25191,7 +25203,7 @@ var require_parser = __commonJS({
                 it.value = token;
               } else {
                 Object.assign(it, { key: token, sep: [] });
-                this.onKeyLine = !includesToken(it.start, "explicit-key-ind");
+                this.onKeyLine = !it.explicitKey;
                 return;
               }
               break;
@@ -25380,7 +25392,8 @@ var require_parser = __commonJS({
             return;
         }
         if (this.indent >= map.indent) {
-          const atNextItem = !this.onKeyLine && this.indent === map.indent && it.sep && this.type !== "seq-item-ind";
+          const atMapIndent = !this.onKeyLine && this.indent === map.indent;
+          const atNextItem = atMapIndent && (it.sep || it.explicitKey) && this.type !== "seq-item-ind";
           let start = [];
           if (atNextItem && it.sep && !it.value) {
             const nl = [];
@@ -25417,23 +25430,24 @@ var require_parser = __commonJS({
               }
               return;
             case "explicit-key-ind":
-              if (!it.sep && !includesToken(it.start, "explicit-key-ind")) {
+              if (!it.sep && !it.explicitKey) {
                 it.start.push(this.sourceToken);
+                it.explicitKey = true;
               } else if (atNextItem || it.value) {
                 start.push(this.sourceToken);
-                map.items.push({ start });
+                map.items.push({ start, explicitKey: true });
               } else {
                 this.stack.push({
                   type: "block-map",
                   offset: this.offset,
                   indent: this.indent,
-                  items: [{ start: [this.sourceToken] }]
+                  items: [{ start: [this.sourceToken], explicitKey: true }]
                 });
               }
               this.onKeyLine = true;
               return;
             case "map-value-ind":
-              if (includesToken(it.start, "explicit-key-ind")) {
+              if (it.explicitKey) {
                 if (!it.sep) {
                   if (includesToken(it.start, "newline")) {
                     Object.assign(it, { key: null, sep: [this.sourceToken] });
@@ -25509,7 +25523,7 @@ var require_parser = __commonJS({
             default: {
               const bv = this.startBlockValue(map);
               if (bv) {
-                if (atNextItem && bv.type !== "block-seq" && includesToken(it.start, "explicit-key-ind")) {
+                if (atMapIndent && bv.type !== "block-seq") {
                   map.items.push({ start });
                 }
                 this.stack.push(bv);
@@ -25720,7 +25734,7 @@ var require_parser = __commonJS({
               type: "block-map",
               offset: this.offset,
               indent: this.indent,
-              items: [{ start }]
+              items: [{ start, explicitKey: true }]
             };
           }
           case "map-value-ind": {

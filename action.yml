@@ -5,11 +5,11 @@ author: '@roamingowl'
 # Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
   icon: 'heart'
-  color: 'red'
+  color: 'blue'
 
 inputs:
   template:
-    description: 'Template string to render or a path to file with template. Supports ETA syntax.'
+    description: 'Template string to render, or a path to file with template. Supports ETA syntax.'
     required: true
   varName:
     description: 'Name of the variable which holds all data to be used in the template (variables)'
