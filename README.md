@@ -5,35 +5,22 @@
 [![CodeQL](https://github.com/roamingowl/template-output/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/roamingowl/template-output/actions/workflows/codeql-analysis.yml)
 [![Coverage](./badges/coverage.svg)](./badges/coverage.svg)
 
+## Description
 Node.js action that renders string template into an output variable using [ETA library](https://eta.js.org/).  
-  
-## Inputs  
-Mandatory:  
-`template` [string]: Template string to render (Supports [ETA](https://eta.js.org/) syntax). Or a path to file containing template.
 
-Optional:
-`variables` [string]: Variables to substitute in the template. You can use YAML, JSON or dotenv format. 
+## Inputs
 
-`varName` [string]: Name of the variable which holds all data to be used in the template (variables). Default: `it`.
+| name | description                                                                                                              | type | required | default |
+| --- |--------------------------------------------------------------------------------------------------------------------------|---------------| --- |---|
+| `template` | <p>Template string to render (Supports [ETA](https://eta.js.org/) syntax). Or a path to file containing template.</p>    | `string` | `true`        | `""` |
+| `varName` | <p>Name of the variable which holds all data to be used in the template (variables).</p>                                 | `string` | `false`       | `it` |
+| `variables` | <p>Variables to substitute in the template. You can use YAML, JSON or dotenv format. See [examples](#usage-examples)</p> | `string` | `false`       | `""` |
 
 ## Outputs
-`output` [string]: Rendered template.
 
-USage example:
-```yaml
-      - name: Render some template
-        id: test-action
-        uses: roamingowl/template-output-with-eta@v1
-        with:
-          template: |
-            hi this is <%= it.what %>
-          variables: |
-            what: 'a test'
-
-      - name: Print Output
-        id: output
-        run: echo "${{ steps.test-action.outputs.text }}"
-```
+| name | type                                      | description                      |
+| --- |-------------------------------------------|----------------------------------|
+| `text` | `string` |  <p>Rendered template string</p> |
 
 ## Enhancements
 You can use functions from [date-fns](https://date-fns.org/) library to format dates inside the template.
@@ -118,12 +105,16 @@ Print date difference between two timestamps in minutes:
 steps:
   - name: Render difference between two timestamps in minutes
     uses: roamingowl/template-output-with-eta@v1
+    id: render
     with:
       template: |
         The difference is <%= Math.abs(utils.dateFns.differenceInMinutes(new Date(it.t1 * 1000), new Date(it.t2 * 1000))) %> minutes
       variables: |
         t1: 1711187861
         t2: 1711188041
+  - name: Print difference
+    shell: bash
+    run: echo "Difference is ${{ steps.render.outputs.text }}"
 ```
 
 # License
