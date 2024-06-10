@@ -22453,7 +22453,7 @@ ${pointer}
 var require_resolve_props = __commonJS({
   "node_modules/yaml/dist/compose/resolve-props.js"(exports2) {
     "use strict";
-    function resolveProps(tokens, { flow, indicator, next, offset, onError, startOnNewline }) {
+    function resolveProps(tokens, { flow, indicator, next, offset, onError, parentIndent, startOnNewline }) {
       let spaceBefore = false;
       let atNewline = startOnNewline;
       let hasSpace = startOnNewline;
@@ -22475,14 +22475,14 @@ var require_resolve_props = __commonJS({
           reqSpace = false;
         }
         if (tab) {
-          if (token.type !== "comment") {
+          if (atNewline && token.type !== "comment" && token.type !== "newline") {
             onError(tab, "TAB_AS_INDENT", "Tabs are not allowed as indentation");
           }
           tab = null;
         }
         switch (token.type) {
           case "space":
-            if (!flow && atNewline && (indicator !== "doc-start" || next?.type !== "flow-collection") && token.source[0] === "	") {
+            if (!flow && (indicator !== "doc-start" || next?.type !== "flow-collection") && token.source.includes("	")) {
               tab = token;
             }
             hasSpace = true;
@@ -22542,7 +22542,7 @@ var require_resolve_props = __commonJS({
             if (found)
               onError(token, "UNEXPECTED_TOKEN", `Unexpected ${token.source} in ${flow ?? "collection"}`);
             found = token;
-            atNewline = false;
+            atNewline = indicator === "seq-item-ind" || indicator === "explicit-key-ind";
             hasSpace = false;
             break;
           case "comma":
@@ -22565,7 +22565,7 @@ var require_resolve_props = __commonJS({
       if (reqSpace && next && next.type !== "space" && next.type !== "newline" && next.type !== "comma" && (next.type !== "scalar" || next.source !== "")) {
         onError(next.offset, "MISSING_CHAR", "Tags and anchors must be separated from the next token by white space");
       }
-      if (tab)
+      if (tab && (atNewline && tab.indent <= parentIndent || next?.type === "block-map" || next?.type === "block-seq"))
         onError(tab, "TAB_AS_INDENT", "Tabs are not allowed as indentation");
       return {
         comma,
@@ -22685,6 +22685,7 @@ var require_resolve_block_map = __commonJS({
           next: key ?? sep?.[0],
           offset,
           onError,
+          parentIndent: bm.indent,
           startOnNewline: true
         });
         const implicitKey = !keyProps.found;
@@ -22722,6 +22723,7 @@ var require_resolve_block_map = __commonJS({
           next: value,
           offset: keyNode.range[2],
           onError,
+          parentIndent: bm.indent,
           startOnNewline: !key || key.type === "block-scalar"
         });
         offset = valueProps.end;
@@ -22784,6 +22786,7 @@ var require_resolve_block_seq = __commonJS({
           next: value,
           offset,
           onError,
+          parentIndent: bs.indent,
           startOnNewline: true
         });
         if (!props.found) {
@@ -22888,6 +22891,7 @@ var require_resolve_flow_collection = __commonJS({
           next: key ?? sep?.[0],
           offset,
           onError,
+          parentIndent: fc.indent,
           startOnNewline: false
         });
         if (!props.found) {
@@ -22962,6 +22966,7 @@ var require_resolve_flow_collection = __commonJS({
             next: value,
             offset: keyNode.range[2],
             onError,
+            parentIndent: fc.indent,
             startOnNewline: false
           });
           if (valueProps.found) {
@@ -23102,9 +23107,9 @@ var require_resolve_block_scalar = __commonJS({
   "node_modules/yaml/dist/compose/resolve-block-scalar.js"(exports2) {
     "use strict";
     var Scalar = require_Scalar();
-    function resolveBlockScalar(scalar, strict, onError) {
+    function resolveBlockScalar(ctx, scalar, onError) {
       const start = scalar.offset;
-      const header = parseBlockScalarHeader(scalar, strict, onError);
+      const header = parseBlockScalarHeader(scalar, ctx.options.strict, onError);
       if (!header)
         return { value: "", type: null, comment: "", range: [start, start, start] };
       const type = header.mode === ">" ? Scalar.Scalar.BLOCK_FOLDED : Scalar.Scalar.BLOCK_LITERAL;
@@ -23140,6 +23145,10 @@ var require_resolve_block_scalar = __commonJS({
           if (header.indent === 0)
             trimIndent = indent.length;
           contentStart = i;
+          if (trimIndent === 0 && !ctx.atRoot) {
+            const message2 = "Block scalar values in collections must be indented";
+            onError(offset, "BAD_INDENT", message2);
+          }
           break;
         }
         offset += indent.length + content.length + 1;
@@ -23500,7 +23509,7 @@ var require_compose_scalar = __commonJS({
     var resolveBlockScalar = require_resolve_block_scalar();
     var resolveFlowScalar = require_resolve_flow_scalar();
     function composeScalar(ctx, token, tagToken, onError) {
-      const { value, type, comment, range } = token.type === "block-scalar" ? resolveBlockScalar.resolveBlockScalar(token, ctx.options.strict, onError) : resolveFlowScalar.resolveFlowScalar(token, ctx.options.strict, onError);
+      const { value, type, comment, range } = token.type === "block-scalar" ? resolveBlockScalar.resolveBlockScalar(ctx, token, onError) : resolveFlowScalar.resolveFlowScalar(token, ctx.options.strict, onError);
       const tagName = tagToken ? ctx.directives.tagName(tagToken.source, (msg) => onError(tagToken, "TAG_RESOLVE_FAILED", msg)) : null;
       const tag = tagToken && tagName ? findScalarTagByName(ctx.schema, value, tagName, tagToken, onError) : token.type === "scalar" ? findScalarTagByTest(ctx, value, token, onError) : ctx.schema[identity.SCALAR];
       let scalar;
@@ -23712,6 +23721,7 @@ var require_compose_doc = __commonJS({
         next: value ?? end?.[0],
         offset,
         onError,
+        parentIndent: 0,
         startOnNewline: true
       });
       if (props.found) {
@@ -23959,7 +23969,7 @@ var require_cst_scalar = __commonJS({
           case "double-quoted-scalar":
             return resolveFlowScalar.resolveFlowScalar(token, strict, _onError);
           case "block-scalar":
-            return resolveBlockScalar.resolveBlockScalar(token, strict, _onError);
+            return resolveBlockScalar.resolveBlockScalar({ options: { strict } }, token, _onError);
         }
       }
       return null;
@@ -24720,17 +24730,17 @@ var require_lexer = __commonJS({
         let nl = this.pos - 1;
         let indent = 0;
         let ch;
-        loop: for (let i = this.pos; ch = this.buffer[i]; ++i) {
+        loop: for (let i2 = this.pos; ch = this.buffer[i2]; ++i2) {
           switch (ch) {
             case " ":
               indent += 1;
               break;
             case "\n":
-              nl = i;
+              nl = i2;
               indent = 0;
               break;
             case "\r": {
-              const next = this.buffer[i + 1];
+              const next = this.buffer[i2 + 1];
               if (!next && !this.atEnd)
                 return this.setNext("block-scalar");
               if (next === "\n")
@@ -24760,17 +24770,25 @@ var require_lexer = __commonJS({
             nl = this.buffer.length;
           }
         }
-        if (!this.blockScalarKeep) {
+        let i = nl + 1;
+        ch = this.buffer[i];
+        while (ch === " ")
+          ch = this.buffer[++i];
+        if (ch === "	") {
+          while (ch === "	" || ch === " " || ch === "\r" || ch === "\n")
+            ch = this.buffer[++i];
+          nl = i - 1;
+        } else if (!this.blockScalarKeep) {
           do {
-            let i = nl - 1;
-            let ch2 = this.buffer[i];
+            let i2 = nl - 1;
+            let ch2 = this.buffer[i2];
             if (ch2 === "\r")
-              ch2 = this.buffer[--i];
-            const lastChar = i;
-            while (ch2 === " " || ch2 === "	")
-              ch2 = this.buffer[--i];
-            if (ch2 === "\n" && i >= this.pos && i + 1 + indent > lastChar)
-              nl = i;
+              ch2 = this.buffer[--i2];
+            const lastChar = i2;
+            while (ch2 === " ")
+              ch2 = this.buffer[--i2];
+            if (ch2 === "\n" && i2 >= this.pos && i2 + 1 + indent > lastChar)
+              nl = i2;
             else
               break;
           } while (true);
