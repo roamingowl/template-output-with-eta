@@ -56,11 +56,15 @@ jobs:
           cache: npm
 
       - name: Install Dependencies
-        id: npm-ci
         run: npm ci
 
       - name: Test
         run: npm run ci-test
+
+      - name: coverage debug
+        run: |
+          echo "coverage"
+          ls -la coverage
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
