@@ -20,7 +20,7 @@ export async function run(): Promise<void> {
     core.debug(`Template string: ${template}`);
     core.debug(`Variables prefix in template: ${varName}`);
 
-    let parsedVariables = parseVariables(rawVariables);
+    const parsedVariables = parseVariables(rawVariables);
 
     const eta = new Eta({
       varName,
