@@ -12,8 +12,8 @@ permissions:
   contents: read
 
 jobs:
-  test-typescript:
-    name: TypeScript Tests
+  check-typescript:
+    name: TypeScript Checks
     runs-on: ubuntu-latest
 
     steps:
@@ -41,7 +41,7 @@ jobs:
         run: npm run lint
 
   sonarcloud:
-    name: SonarCloud
+    name: TypeScript Tests and SonarCloud Scan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
