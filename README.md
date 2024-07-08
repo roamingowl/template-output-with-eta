@@ -4,6 +4,9 @@
 ![CI](https://github.com/roamingowl/template-output/actions/workflows/ci.yml/badge.svg)
 [![CodeQL](https://github.com/roamingowl/template-output/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/roamingowl/template-output/actions/workflows/codeql-analysis.yml)
 [![Coverage](./badges/coverage.svg)](./badges/coverage.svg)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=roamingowl_template-output-with-eta&metric=coverage)](https://sonarcloud.io/summary/new_code?id=roamingowl_template-output-with-eta)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=roamingowl_template-output-with-eta&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=roamingowl_template-output-with-eta)
+
 
 ## Description
 Node.js action that renders string template into an output variable using [ETA library](https://eta.js.org/).  
