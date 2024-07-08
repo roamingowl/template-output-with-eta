@@ -28,6 +28,7 @@ export async function run(): Promise<void> {
     });
 
     if (fs.existsSync(template)) {
+      core.debug('Template is a file, reading it...');
       template = fs.readFileSync(template, 'utf8');
     }
 
