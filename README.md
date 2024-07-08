@@ -5,6 +5,7 @@
 [![CodeQL](https://github.com/roamingowl/template-output/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/roamingowl/template-output/actions/workflows/codeql-analysis.yml)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=roamingowl_template-output-with-eta&metric=coverage)](https://sonarcloud.io/summary/new_code?id=roamingowl_template-output-with-eta)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=roamingowl_template-output-with-eta&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=roamingowl_template-output-with-eta)
+![Deno Badge](https://img.shields.io/badge/esbuild-^0.23.0-FFCF00)
 
 
 ## Description
