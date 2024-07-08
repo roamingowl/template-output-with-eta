@@ -713,7 +713,7 @@ var require_tunnel = __commonJS({
         connectOptions.headers = connectOptions.headers || {};
         connectOptions.headers["Proxy-Authorization"] = "Basic " + new Buffer(connectOptions.proxyAuth).toString("base64");
       }
-      debug2("making CONNECT request");
+      debug3("making CONNECT request");
       var connectReq = self.request(connectOptions);
       connectReq.useChunkedEncodingByDefault = false;
       connectReq.once("response", onResponse);
@@ -733,7 +733,7 @@ var require_tunnel = __commonJS({
         connectReq.removeAllListeners();
         socket.removeAllListeners();
         if (res.statusCode !== 200) {
-          debug2(
+          debug3(
             "tunneling socket could not be established, statusCode=%d",
             res.statusCode
           );
@@ -745,7 +745,7 @@ var require_tunnel = __commonJS({
           return;
         }
         if (head.length > 0) {
-          debug2("got illegal response body from proxy");
+          debug3("got illegal response body from proxy");
           socket.destroy();
           var error2 = new Error("got illegal response body from proxy");
           error2.code = "ECONNRESET";
@@ -753,13 +753,13 @@ var require_tunnel = __commonJS({
           self.removeSocket(placeholder);
           return;
         }
-        debug2("tunneling connection has established");
+        debug3("tunneling connection has established");
         self.sockets[self.sockets.indexOf(placeholder)] = socket;
         return cb(socket);
       }
       function onError(cause) {
         connectReq.removeAllListeners();
-        debug2(
+        debug3(
           "tunneling socket could not be established, cause=%s\n",
           cause.message,
           cause.stack
@@ -821,9 +821,9 @@ var require_tunnel = __commonJS({
       }
       return target;
     }
-    var debug2;
+    var debug3;
     if (process.env.NODE_DEBUG && /\btunnel\b/.test(process.env.NODE_DEBUG)) {
-      debug2 = function() {
+      debug3 = function() {
         var args = Array.prototype.slice.call(arguments);
         if (typeof args[0] === "string") {
           args[0] = "TUNNEL: " + args[0];
@@ -833,10 +833,10 @@ var require_tunnel = __commonJS({
         console.error.apply(console, args);
       };
     } else {
-      debug2 = function() {
+      debug3 = function() {
       };
     }
-    exports2.debug = debug2;
+    exports2.debug = debug3;
   }
 });
 
@@ -18887,10 +18887,10 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       return process.env["RUNNER_DEBUG"] === "1";
     }
     exports2.isDebug = isDebug;
-    function debug2(message2) {
+    function debug3(message2) {
       command_1.issueCommand("debug", {}, message2);
     }
-    exports2.debug = debug2;
+    exports2.debug = debug3;
     function error2(message2, properties = {}) {
       command_1.issueCommand("error", utils_1.toCommandProperties(properties), message2 instanceof Error ? message2.toString() : message2);
     }
@@ -20579,7 +20579,7 @@ ${ctx.indent}`;
 var require_log = __commonJS({
   "node_modules/yaml/dist/log.js"(exports2) {
     "use strict";
-    function debug2(logLevel, ...messages) {
+    function debug3(logLevel, ...messages) {
       if (logLevel === "debug")
         console.log(...messages);
     }
@@ -20591,7 +20591,7 @@ var require_log = __commonJS({
           console.warn(warning);
       }
     }
-    exports2.debug = debug2;
+    exports2.debug = debug3;
     exports2.warn = warn;
   }
 });
@@ -26344,11 +26344,11 @@ var require_main2 = __commonJS({
     function configDotenv(options) {
       const dotenvPath = path2.resolve(process.cwd(), ".env");
       let encoding = "utf8";
-      const debug2 = Boolean(options && options.debug);
+      const debug3 = Boolean(options && options.debug);
       if (options && options.encoding) {
         encoding = options.encoding;
       } else {
-        if (debug2) {
+        if (debug3) {
           _debug("No encoding is specified. UTF-8 is used by default");
         }
       }
@@ -26370,7 +26370,7 @@ var require_main2 = __commonJS({
           const parsed = DotenvModule.parse(fs3.readFileSync(path3, { encoding }));
           DotenvModule.populate(parsedAll, parsed, options);
         } catch (e) {
-          if (debug2) {
+          if (debug3) {
             _debug(`Failed to load ${path3} ${e.message}`);
           }
           lastError = e;
@@ -26426,7 +26426,7 @@ var require_main2 = __commonJS({
       }
     }
     function populate(processEnv, parsed, options = {}) {
-      const debug2 = Boolean(options && options.debug);
+      const debug3 = Boolean(options && options.debug);
       const override = Boolean(options && options.override);
       if (typeof parsed !== "object") {
         const err = new Error("OBJECT_REQUIRED: Please check the processEnv argument being passed to populate");
@@ -26438,7 +26438,7 @@ var require_main2 = __commonJS({
           if (override === true) {
             processEnv[key] = parsed[key];
           }
-          if (debug2) {
+          if (debug3) {
             if (override === true) {
               _debug(`"${key}" is already defined and WAS overwritten`);
             } else {
@@ -26471,7 +26471,7 @@ var require_main2 = __commonJS({
 });
 
 // src/main.ts
-var core = __toESM(require_core());
+var core2 = __toESM(require_core());
 
 // node_modules/eta/dist/eta.module.mjs
 var path = __toESM(require("node:path"), 1);
@@ -27030,8 +27030,6 @@ var Eta = class extends Eta$1 {
 };
 
 // src/main.ts
-var import_yaml = __toESM(require_dist());
-var import_dotenv = __toESM(require_main2());
 var fs2 = __toESM(require("fs"));
 
 // node_modules/date-fns/index.mjs
@@ -33005,46 +33003,57 @@ Object.getOwnPropertyNames(Date.prototype).forEach((method) => {
   }
 });
 
+// src/variables.ts
+var core = __toESM(require_core());
+var import_yaml = __toESM(require_dist());
+var import_dotenv = __toESM(require_main2());
+function parseVariables(variables) {
+  if (variables.length <= 0) {
+    return void 0;
+  }
+  let parsedVariables;
+  try {
+    parsedVariables = JSON.parse(variables);
+    core.debug("Variables parsed as JSON");
+  } catch {
+  }
+  if (typeof parsedVariables !== "object") {
+    try {
+      parsedVariables = import_yaml.default.parse(variables);
+      core.debug("Variables parsed as YAML");
+    } catch {
+    }
+  }
+  if (typeof parsedVariables !== "object") {
+    parsedVariables = import_dotenv.default.parse(Buffer.from(variables, "utf8"));
+    if (typeof parsedVariables === "object" && Object.keys(parsedVariables).length === 0) {
+      core.debug("No variables found by dotenv");
+      parsedVariables = void 0;
+    }
+  }
+  if (typeof parsedVariables !== "object") {
+    core.error("Unable ot parse variables as JSON or YAML");
+  }
+  return parsedVariables;
+}
+
 // src/main.ts
 async function run() {
   try {
-    let template = core.getInput("template", { required: true });
-    const varName = core.getInput("var_name", { required: false }) || "it";
-    const variables = core.getInput("variables", {
+    let template = core2.getInput("template", { required: true });
+    const varName = core2.getInput("var_name", { required: false }) || "it";
+    const rawVariables = core2.getInput("variables", {
       required: false
     });
-    core.debug(`Template string: ${template}`);
-    core.debug(`Variables prefix in template: ${varName}`);
-    let parsedVariables;
-    if (variables.length > 0) {
-      try {
-        parsedVariables = JSON.parse(variables);
-        core.debug("Variables parsed as JSON");
-      } catch {
-      }
-      if (typeof parsedVariables !== "object") {
-        try {
-          parsedVariables = import_yaml.default.parse(variables);
-          core.debug("Variables parsed as YAML");
-        } catch {
-        }
-      }
-      if (typeof parsedVariables !== "object") {
-        parsedVariables = import_dotenv.default.parse(Buffer.from(variables, "utf8"));
-        if (typeof parsedVariables === "object" && Object.keys(parsedVariables).length === 0) {
-          core.debug("No variables found by dotenv");
-          parsedVariables = void 0;
-        }
-      }
-      if (typeof parsedVariables !== "object") {
-        core.error("Unable ot parse variables as JSON or YAML");
-      }
-    }
+    core2.debug(`Template string: ${template}`);
+    core2.debug(`Variables prefix in template: ${varName}`);
+    const parsedVariables = parseVariables(rawVariables);
     const eta = new Eta({
       varName,
       functionHeader: "const utils = it._utilsInternal; const UTCDateMini = utils.UTCDateMini;"
     });
     if (fs2.existsSync(template)) {
+      core2.debug("Template is a file, reading it...");
       template = fs2.readFileSync(template, "utf8");
     }
     const templateVariables = {
@@ -33052,9 +33061,9 @@ async function run() {
       _utilsInternal: { dateFns: date_fns_exports, UTCDateMini }
     };
     const renderedTemplate = eta.renderString(template, templateVariables);
-    core.setOutput("text", renderedTemplate);
+    core2.setOutput("text", renderedTemplate);
   } catch (error2) {
-    core.setFailed(error2.message);
+    core2.setFailed(error2.message);
   }
 }
 
