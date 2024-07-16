@@ -18895,10 +18895,10 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       command_1.issueCommand("error", utils_1.toCommandProperties(properties), message2 instanceof Error ? message2.toString() : message2);
     }
     exports2.error = error2;
-    function warning(message2, properties = {}) {
+    function warning2(message2, properties = {}) {
       command_1.issueCommand("warning", utils_1.toCommandProperties(properties), message2 instanceof Error ? message2.toString() : message2);
     }
-    exports2.warning = warning;
+    exports2.warning = warning2;
     function notice(message2, properties = {}) {
       command_1.issueCommand("notice", utils_1.toCommandProperties(properties), message2 instanceof Error ? message2.toString() : message2);
     }
@@ -20583,12 +20583,12 @@ var require_log = __commonJS({
       if (logLevel === "debug")
         console.log(...messages);
     }
-    function warn(logLevel, warning) {
+    function warn(logLevel, warning2) {
       if (logLevel === "debug" || logLevel === "warn") {
         if (typeof process !== "undefined" && process.emitWarning)
-          process.emitWarning(warning);
+          process.emitWarning(warning2);
         else
-          console.warn(warning);
+          console.warn(warning2);
       }
     }
     exports2.debug = debug3;
@@ -23962,9 +23962,9 @@ var require_composer = __commonJS({
         this.prelude = [];
         this.errors = [];
         this.warnings = [];
-        this.onError = (source, code, message2, warning) => {
+        this.onError = (source, code, message2, warning2) => {
           const pos = getErrorPos(source);
-          if (warning)
+          if (warning2)
             this.warnings.push(new errors.YAMLWarning(pos, code, message2));
           else
             this.errors.push(new errors.YAMLParseError(pos, code, message2));
@@ -24035,10 +24035,10 @@ ${cb}` : comment;
           console.dir(token, { depth: null });
         switch (token.type) {
           case "directive":
-            this.directives.add(token.source, (offset, message2, warning) => {
+            this.directives.add(token.source, (offset, message2, warning2) => {
               const pos = getErrorPos(token);
               pos[0] += offset;
-              this.onError(pos, "BAD_DIRECTIVE", message2, warning);
+              this.onError(pos, "BAD_DIRECTIVE", message2, warning2);
             });
             this.prelude.push(token.source);
             this.atDirectives = true;
@@ -26044,7 +26044,7 @@ var require_public_api = __commonJS({
       const doc = parseDocument(src, options);
       if (!doc)
         return null;
-      doc.warnings.forEach((warning) => log.warn(doc.options.logLevel, warning));
+      doc.warnings.forEach((warning2) => log.warn(doc.options.logLevel, warning2));
       if (doc.errors.length > 0) {
         if (doc.options.logLevel !== "silent")
           throw doc.errors[0];
@@ -33009,6 +33009,7 @@ var import_yaml = __toESM(require_dist());
 var import_dotenv = __toESM(require_main2());
 function parseVariables(variables) {
   if (variables.length <= 0) {
+    core.warning("No variables parsed");
     return void 0;
   }
   let parsedVariables;

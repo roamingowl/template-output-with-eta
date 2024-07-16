@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 
 export function parseVariables(variables: string): { [key: string]: string } | undefined {
   if (variables.length <= 0) {
+    core.warning('No variables parsed');
     return undefined;
   }
 
