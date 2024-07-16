@@ -33,11 +33,11 @@ jobs:
         id: npm-ci
         run: npm ci
 
-      - name: Check Format
+      - name: Check Format with prettier
         id: npm-format-check
         run: npm run format:check
 
-      - name: Lint
+      - name: Lint with eslint
         id: npm-lint
         run: npm run lint
 
