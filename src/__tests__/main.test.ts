@@ -50,6 +50,26 @@ describe('action', () => {
 
   const TEMPLATE = 'Hi, <%= it.name %>! You are <%= it.age %> years old.';
 
+  describe('render template without variables', () => {
+    it('should render template without variables', async () => {
+      // Set the action's inputs as return values from core.getInput()
+      getInputMock.mockImplementation(name => {
+        switch (name) {
+          case 'template':
+            return 'Hello sunshine!';
+          default:
+            return '';
+        }
+      });
+
+      await run();
+
+      expect(setOutputMock).toHaveBeenNthCalledWith(1, 'text', expect.stringMatching('Hello sunshine!'));
+      expect(errorMock).not.toHaveBeenCalled();
+      expect(warnMock).toHaveBeenCalled();
+    });
+  });
+
   describe('render template with variables', () => {
     it('YAML variables', async () => {
       // Set the action's inputs as return values from core.getInput()

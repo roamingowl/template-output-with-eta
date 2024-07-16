@@ -1,6 +1,5 @@
 # Render template to output variable with Eta
 
-[![GitHub Super-Linter](https://github.com/roamingowl/template-output/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
 ![CI](https://github.com/roamingowl/template-output/actions/workflows/ci.yml/badge.svg)
 [![CodeQL](https://github.com/roamingowl/template-output/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/roamingowl/template-output/actions/workflows/codeql-analysis.yml)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=roamingowl_template-output-with-eta&metric=coverage)](https://sonarcloud.io/summary/new_code?id=roamingowl_template-output-with-eta)
