@@ -18,7 +18,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - &checkout
+        name: Checkout
         id: checkout
         uses: actions/checkout@v4
 
@@ -78,9 +79,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
+      - *checkout
+#      - name: Checkout
+#        id: checkout
+#        uses: actions/checkout@v4
 
       - name: Test Local Action - render template from file
         id: test-action
@@ -99,9 +101,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
+      - *checkout
+#      - name: Checkout
+#        id: checkout
+#        uses: actions/checkout@v4
 
       - name: Test Local Action - render string
         id: test-action
