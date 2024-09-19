@@ -1,8 +1,8 @@
+import * as fs from 'node:fs';
 import * as core from '@actions/core';
-import { Eta } from 'eta';
-import * as fs from 'fs';
-import * as dateFns from 'date-fns';
 import { UTCDateMini } from '@date-fns/utc';
+import * as dateFns from 'date-fns';
+import { Eta } from 'eta';
 import { parseVariables } from './variables';
 
 /**

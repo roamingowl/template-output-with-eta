@@ -26,8 +26,8 @@
   "scripts": {
     "bundle": "npm run format:write && npm run package && npm run build-license",
     "ci-test": "jest --coverage",
-    "format:write": "prettier --write **/*.ts",
-    "format:check": "prettier --check **/*.ts",
+    "format:write": "npx @biomejs/biome format --write **/*.ts",
+    "format:check": "npx @biomejs/biome ci **/*.ts",
     "lint": "eslint . -c .eslintrc.yml",
     "package": "esbuild src/index.ts --bundle --platform=node --target=node20 --outfile=dist/index.js",
     "build-license": "generate-license-file --input package.json --output dist/licenses.txt --overwrite",
@@ -73,6 +73,7 @@
     "yaml": "2.5.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.2",
     "@types/jest": "^29.5.13",
     "@types/node": "^22.5.5",
     "@typescript-eslint/eslint-plugin": "^7.16.1",

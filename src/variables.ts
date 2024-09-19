@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
-import YAML from 'yaml';
 import dotenv from 'dotenv';
+import YAML from 'yaml';
 
 export function parseVariables(variables: string): { [key: string]: string } | undefined {
   if (variables.length <= 0) {
