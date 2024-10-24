@@ -2,7 +2,6 @@ import * as core from '@actions/core';
 import { run } from '../main';
 
 let getInputMock: jest.SpiedFunction<typeof core.getInput>;
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let setFailedMock: jest.SpiedFunction<typeof core.setFailed>;
 let setOutputMock: jest.SpiedFunction<typeof core.setOutput>;
 
