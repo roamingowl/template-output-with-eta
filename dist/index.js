@@ -26511,6 +26511,7 @@ var require_main2 = __commonJS({
 });
 
 // src/main.ts
+var fs2 = __toESM(require("fs"));
 var core2 = __toESM(require_core());
 
 // node_modules/eta/dist/eta.module.mjs
@@ -27065,9 +27066,6 @@ var Eta = class extends Eta$1 {
     this.resolvePath = resolvePath;
   }
 };
-
-// src/main.ts
-var fs2 = __toESM(require("fs"));
 
 // node_modules/date-fns/index.js
 var date_fns_exports = {};
