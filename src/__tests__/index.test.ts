@@ -1,11 +1,11 @@
+import { vi, describe, it, expect } from 'vitest';
 import * as main from '../main';
 
-const runMock = jest.spyOn(main, 'run').mockImplementation();
+const runMock = vi.spyOn(main, 'run').mockImplementation(vi.fn());
 
 describe('index', () => {
   it('calls run when imported', async () => {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    require('../index');
+    await import('../index');
     expect(runMock).toHaveBeenCalled();
   });
 });

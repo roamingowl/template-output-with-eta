@@ -4,7 +4,7 @@
     "target": "ES2022",
     "module": "NodeNext",
     "rootDir": "./src",
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "Bundler",
     "baseUrl": "./",
     "sourceMap": true,
     "outDir": "./dist",

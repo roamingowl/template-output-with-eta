@@ -1,15 +1,17 @@
 import * as core from '@actions/core';
+import type { MockInstance } from 'vitest';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { run } from '../main';
 
-let getInputMock: jest.SpiedFunction<typeof core.getInput>;
-let setFailedMock: jest.SpiedFunction<typeof core.setFailed>;
-let setOutputMock: jest.SpiedFunction<typeof core.setOutput>;
+let getInputMock: MockInstance<typeof core.getInput>;
+let setFailedMock: MockInstance<typeof core.setFailed>;
+let setOutputMock: MockInstance<typeof core.setOutput>;
 
-jest.mock('eta', () => {
+vi.mock('eta', async importOriginal => {
   return {
-    ...jest.requireActual('eta'),
-    Eta: jest.fn(() => ({
-      renderString: jest.fn(() => {
+    ...(await importOriginal<typeof import('eta')>()),
+    Eta: vi.fn(() => ({
+      renderString: vi.fn(() => {
         throw new Error('test error');
       })
     }))
@@ -18,11 +20,11 @@ jest.mock('eta', () => {
 
 describe('action', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
-    getInputMock = jest.spyOn(core, 'getInput').mockImplementation();
-    setFailedMock = jest.spyOn(core, 'setFailed').mockImplementation();
-    setOutputMock = jest.spyOn(core, 'setOutput').mockImplementation();
+    getInputMock = vi.spyOn(core, 'getInput').mockImplementation(vi.fn());
+    setFailedMock = vi.spyOn(core, 'setFailed').mockImplementation(vi.fn());
+    setOutputMock = vi.spyOn(core, 'setOutput').mockImplementation(vi.fn());
   });
 
   describe('critical failure', () => {
