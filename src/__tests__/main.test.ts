@@ -1,29 +1,26 @@
 import * as core from '@actions/core';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
+import type { MockInstance } from 'vitest';
 import { run } from '../main';
 
-// Mock the action's main function
-// const runMock = jest.spyOn(main, 'run');
-
-// Mock the GitHub Actions core library
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-let debugMock: jest.SpiedFunction<typeof core.debug>;
-let errorMock: jest.SpiedFunction<typeof core.error>;
-let warnMock: jest.SpiedFunction<typeof core.error>;
-let getInputMock: jest.SpiedFunction<typeof core.getInput>;
-let setFailedMock: jest.SpiedFunction<typeof core.setFailed>;
-let setOutputMock: jest.SpiedFunction<typeof core.setOutput>;
+let debugMock: MockInstance<typeof core.debug>;
+let errorMock: MockInstance<typeof core.error>;
+let warnMock: MockInstance<typeof core.warning>;
+let getInputMock: MockInstance<typeof core.getInput>;
+let setFailedMock: MockInstance<typeof core.setFailed>;
+let setOutputMock: MockInstance<typeof core.setOutput>;
 
 describe('action', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
-    debugMock = jest.spyOn(core, 'debug').mockImplementation();
-    errorMock = jest.spyOn(core, 'error').mockImplementation();
-    warnMock = jest.spyOn(core, 'warning').mockImplementation();
-    getInputMock = jest.spyOn(core, 'getInput').mockImplementation();
-    setFailedMock = jest.spyOn(core, 'setFailed').mockImplementation();
-    setOutputMock = jest.spyOn(core, 'setOutput').mockImplementation();
+    debugMock = vi.spyOn(core, 'debug').mockImplementation(vi.fn());
+    errorMock = vi.spyOn(core, 'error').mockImplementation(vi.fn());
+    warnMock = vi.spyOn(core, 'warning').mockImplementation(vi.fn());
+    getInputMock = vi.spyOn(core, 'getInput').mockImplementation(vi.fn());
+    setFailedMock = vi.spyOn(core, 'setFailed').mockImplementation(vi.fn());
+    setOutputMock = vi.spyOn(core, 'setOutput').mockImplementation(vi.fn());
   });
 
   describe('fail to parse variables', () => {
