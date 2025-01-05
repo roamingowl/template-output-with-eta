@@ -1,0 +1,6 @@
+MD013:
+  tables: false
+  code_blocks: false
+MD033:
+  # Allowed elements
+  allowed_elements: ['p']

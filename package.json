@@ -29,6 +29,7 @@
     "format:write": "prettier --write **/*.ts",
     "format:check": "prettier --check **/*.ts",
     "lint": "eslint .",
+    "lint:md": "markdownlint-cli2 .",
     "package": "esbuild src/index.ts --bundle --platform=node --target=node20 --outfile=dist/index.js",
     "build-license": "generate-license-file --input package.json --output dist/licenses.txt --overwrite",
     "package:watch": "npm run package -- --watch",
@@ -44,7 +45,6 @@
     "yaml": "2.7.0"
   },
   "devDependencies": {
-    "vitest": "^2.1.8",
     "@eslint/js": "^9.17.0",
     "@types/node": "^22.10.5",
     "@vitest/coverage-v8": "^2.1.8",
@@ -53,9 +53,12 @@
     "eslint-plugin-import": "^2.31.0",
     "generate-license-file": "^3.6.0",
     "globals": "^15.14.0",
+    "markdownlint": "^0.37.3",
+    "markdownlint-cli2": "^0.17.1",
     "prettier": "^3.4.2",
     "prettier-eslint": "^16.3.0",
     "typescript": "^5.7.2",
-    "typescript-eslint": "^8.19.0"
+    "typescript-eslint": "^8.19.0",
+    "vitest": "^2.1.8"
   }
 }
