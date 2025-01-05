@@ -21420,14 +21420,15 @@ ${ctx.indent}`;
 var require_log = __commonJS({
   "node_modules/yaml/dist/log.js"(exports2) {
     "use strict";
+    var node_process = require("node:process");
     function debug3(logLevel, ...messages) {
       if (logLevel === "debug")
         console.log(...messages);
     }
     function warn(logLevel, warning2) {
       if (logLevel === "debug" || logLevel === "warn") {
-        if (typeof process !== "undefined" && process.emitWarning)
-          process.emitWarning(warning2);
+        if (typeof node_process.emitWarning === "function")
+          node_process.emitWarning(warning2);
         else
           console.warn(warning2);
       }
@@ -22324,6 +22325,7 @@ var require_schema2 = __commonJS({
 var require_binary = __commonJS({
   "node_modules/yaml/dist/schema/yaml-1.1/binary.js"(exports2) {
     "use strict";
+    var node_buffer = require("node:buffer");
     var Scalar = require_Scalar();
     var stringifyString = require_stringifyString();
     var binary = {
@@ -22340,8 +22342,8 @@ var require_binary = __commonJS({
        *   document.querySelector('#photo').src = URL.createObjectURL(blob)
        */
       resolve(src, onError) {
-        if (typeof Buffer === "function") {
-          return Buffer.from(src, "base64");
+        if (typeof node_buffer.Buffer === "function") {
+          return node_buffer.Buffer.from(src, "base64");
         } else if (typeof atob === "function") {
           const str = atob(src.replace(/[\n\r]/g, ""));
           const buffer = new Uint8Array(str.length);
@@ -22356,8 +22358,8 @@ var require_binary = __commonJS({
       stringify({ comment, type, value }, ctx, onComment, onChompKeep) {
         const buf = value;
         let str;
-        if (typeof Buffer === "function") {
-          str = buf instanceof Buffer ? buf.toString("base64") : Buffer.from(buf.buffer).toString("base64");
+        if (typeof node_buffer.Buffer === "function") {
+          str = buf instanceof node_buffer.Buffer ? buf.toString("base64") : node_buffer.Buffer.from(buf.buffer).toString("base64");
         } else if (typeof btoa === "function") {
           let s = "";
           for (let i = 0; i < buf.length; ++i)
@@ -23555,7 +23557,7 @@ var require_resolve_props = __commonJS({
             if (atNewline) {
               if (comment)
                 comment += token.source;
-              else
+              else if (!found || indicator !== "seq-item-ind")
                 spaceBefore = true;
             } else
               commentSep += token.source;
@@ -24836,6 +24838,7 @@ var require_compose_doc = __commonJS({
 var require_composer = __commonJS({
   "node_modules/yaml/dist/compose/composer.js"(exports2) {
     "use strict";
+    var node_process = require("node:process");
     var directives = require_directives();
     var Document = require_Document();
     var errors = require_errors2();
@@ -24951,7 +24954,7 @@ ${cb}` : comment;
       }
       /** Advance the composer by one CST token. */
       *next(token) {
-        if (process.env.LOG_STREAM)
+        if (node_process.env.LOG_STREAM)
           console.dir(token, { depth: null });
         switch (token.type) {
           case "directive":
@@ -26061,6 +26064,7 @@ var require_line_counter = __commonJS({
 var require_parser = __commonJS({
   "node_modules/yaml/dist/parse/parser.js"(exports2) {
     "use strict";
+    var node_process = require("node:process");
     var cst = require_cst();
     var lexer = require_lexer();
     function includesToken(list, type) {
@@ -26184,7 +26188,7 @@ var require_parser = __commonJS({
        */
       *next(source) {
         this.source = source;
-        if (process.env.LOG_TOKENS)
+        if (node_process.env.LOG_TOKENS)
           console.log("|", cst.prettyToken(source));
         if (this.atScalar) {
           this.atScalar = false;
@@ -27067,7 +27071,7 @@ var require_package = __commonJS({
   "node_modules/dotenv/package.json"(exports2, module2) {
     module2.exports = {
       name: "dotenv",
-      version: "16.4.5",
+      version: "16.4.7",
       description: "Loads environment variables from .env file",
       main: "lib/main.js",
       types: "lib/main.d.ts",
@@ -27088,10 +27092,9 @@ var require_package = __commonJS({
       scripts: {
         "dts-check": "tsc --project tests/types/tsconfig.json",
         lint: "standard",
-        "lint-readme": "standard-markdown",
         pretest: "npm run lint && npm run dts-check",
-        test: "tap tests/*.js --100 -Rspec",
-        "test:coverage": "tap --coverage-report=lcov",
+        test: "tap run --allow-empty-coverage --disable-coverage --timeout=60000",
+        "test:coverage": "tap run --show-full-coverage --timeout=60000 --coverage-report=lcov",
         prerelease: "npm test",
         release: "standard-version"
       },
@@ -27112,15 +27115,12 @@ var require_package = __commonJS({
       readmeFilename: "README.md",
       license: "BSD-2-Clause",
       devDependencies: {
-        "@definitelytyped/dtslint": "^0.0.133",
         "@types/node": "^18.11.3",
-        decache: "^4.6.1",
+        decache: "^4.6.2",
         sinon: "^14.0.1",
         standard: "^17.0.0",
-        "standard-markdown": "^7.1.0",
         "standard-version": "^9.5.0",
-        tap: "^16.3.0",
-        tar: "^6.1.11",
+        tap: "^19.2.0",
         typescript: "^4.8.4"
       },
       engines: {
