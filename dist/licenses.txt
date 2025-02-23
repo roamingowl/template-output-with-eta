@@ -3,7 +3,7 @@ https://www.npmjs.com/package/generate-license-file
 
 The following npm package may be included in this product:
 
- - @actions/http-client@2.2.1
+ - @actions/http-client@2.2.3
 
 This package contains the following license:
 
@@ -191,7 +191,7 @@ SOFTWARE.
 
 The following npm package may be included in this product:
 
- - undici@5.28.4
+ - undici@5.28.5
 
 This package contains the following license:
 
