@@ -20238,8 +20238,7 @@ var require_anchors = __commonJS({
       return {
         onAnchor: (source) => {
           aliasObjects.push(source);
-          if (!prevAnchors)
-            prevAnchors = anchorNames(doc);
+          prevAnchors ?? (prevAnchors = anchorNames(doc));
           const anchor = findNewAnchor(prefix, prevAnchors);
           prevAnchors.add(anchor);
           return anchor;
@@ -20415,23 +20414,35 @@ var require_Alias = __commonJS({
        * Resolve the value of this alias within `doc`, finding the last
        * instance of the `source` anchor before this node.
        */
-      resolve(doc) {
+      resolve(doc, ctx) {
+        let nodes;
+        if (ctx?.aliasResolveCache) {
+          nodes = ctx.aliasResolveCache;
+        } else {
+          nodes = [];
+          visit.visit(doc, {
+            Node: (_key, node) => {
+              if (identity.isAlias(node) || identity.hasAnchor(node))
+                nodes.push(node);
+            }
+          });
+          if (ctx)
+            ctx.aliasResolveCache = nodes;
+        }
         let found = void 0;
-        visit.visit(doc, {
-          Node: (_key, node) => {
-            if (node === this)
-              return visit.visit.BREAK;
-            if (node.anchor === this.source)
-              found = node;
-          }
-        });
+        for (const node of nodes) {
+          if (node === this)
+            break;
+          if (node.anchor === this.source)
+            found = node;
+        }
         return found;
       }
       toJSON(_arg, ctx) {
         if (!ctx)
           return { source: this.source };
         const { anchors: anchors2, doc, maxAliasCount } = ctx;
-        const source = this.resolve(doc);
+        const source = this.resolve(doc, ctx);
         if (!source) {
           const msg = `Unresolved alias (the anchor must be set before the alias): ${this.source}`;
           throw new ReferenceError(msg);
@@ -20560,8 +20571,7 @@ var require_createNode = __commonJS({
       if (aliasDuplicateObjects && value && typeof value === "object") {
         ref = sourceObjects.get(value);
         if (ref) {
-          if (!ref.anchor)
-            ref.anchor = onAnchor(value);
+          ref.anchor ?? (ref.anchor = onAnchor(value));
           return new Alias.Alias(ref.anchor);
         } else {
           ref = { anchor: null, node: null };
@@ -21118,7 +21128,7 @@ ${indent}${start}${value}${end}`;
       if (implicitKey && value.includes("\n") || inFlow && /[[\]{},]/.test(value)) {
         return quotedString(value, ctx);
       }
-      if (!value || /^[\n\t ,[\]{}#&*!|>'"%@`]|^[?-]$|^[?-][ \t]|[\n:][ \t]|[ \t]\n|[\n\t ]#|[\n\t :]$/.test(value)) {
+      if (/^[\n\t ,[\]{}#&*!|>'"%@`]|^[?-]$|^[?-][ \t]|[\n:][ \t]|[ \t]\n|[\n\t ]#|[\n\t :]$/.test(value)) {
         return implicitKey || inFlow || !value.includes("\n") ? quotedString(value, ctx) : blockString(item, ctx, onComment, onChompKeep);
       }
       if (!implicitKey && !inFlow && type !== Scalar.Scalar.PLAIN && value.includes("\n")) {
@@ -21250,7 +21260,7 @@ var require_stringify = __commonJS({
         tagObj = tags.find((t) => t.nodeClass && obj instanceof t.nodeClass);
       }
       if (!tagObj) {
-        const name = obj?.constructor?.name ?? typeof obj;
+        const name = obj?.constructor?.name ?? (obj === null ? "null" : typeof obj);
         throw new Error(`Tag not resolved for ${name} value`);
       }
       return tagObj;
@@ -21264,7 +21274,7 @@ var require_stringify = __commonJS({
         anchors$1.add(anchor);
         props.push(`&${anchor}`);
       }
-      const tag = node.tag ? node.tag : tagObj.default ? null : tagObj.tag;
+      const tag = node.tag ?? (tagObj.default ? null : tagObj.tag);
       if (tag)
         props.push(doc.directives.tagString(tag));
       return props.join(" ");
@@ -21287,8 +21297,7 @@ var require_stringify = __commonJS({
       }
       let tagObj = void 0;
       const node = identity.isNode(item) ? item : ctx.doc.createNode(item, { onTagObj: (o) => tagObj = o });
-      if (!tagObj)
-        tagObj = getTagObject(ctx.doc.schema.tags, node);
+      tagObj ?? (tagObj = getTagObject(ctx.doc.schema.tags, node));
       const props = stringifyProps(node, tagObj, ctx);
       if (props.length > 0)
         ctx.indentAtStart = (ctx.indentAtStart ?? 0) + props.length + 1;
@@ -21440,7 +21449,7 @@ ${ctx.indent}`;
 var require_log = __commonJS({
   "node_modules/yaml/dist/log.js"(exports2) {
     "use strict";
-    var node_process = require("node:process");
+    var node_process = require("process");
     function debug3(logLevel, ...messages) {
       if (logLevel === "debug")
         console.log(...messages);
@@ -22345,7 +22354,7 @@ var require_schema2 = __commonJS({
 var require_binary = __commonJS({
   "node_modules/yaml/dist/schema/yaml-1.1/binary.js"(exports2) {
     "use strict";
-    var node_buffer = require("node:buffer");
+    var node_buffer = require("buffer");
     var Scalar = require_Scalar();
     var stringifyString = require_stringifyString();
     var binary = {
@@ -22376,6 +22385,8 @@ var require_binary = __commonJS({
         }
       },
       stringify({ comment, type, value }, ctx, onComment, onChompKeep) {
+        if (!value)
+          return "";
         const buf = value;
         let str;
         if (typeof node_buffer.Buffer === "function") {
@@ -22388,8 +22399,7 @@ var require_binary = __commonJS({
         } else {
           throw new Error("This environment does not support writing binary tags; either Buffer or btoa is required");
         }
-        if (!type)
-          type = Scalar.Scalar.BLOCK_LITERAL;
+        type ?? (type = Scalar.Scalar.BLOCK_LITERAL);
         if (type !== Scalar.Scalar.QUOTE_DOUBLE) {
           const lineWidth = Math.max(ctx.options.lineWidth - ctx.indent.length, ctx.options.minContentWidth);
           const n = Math.ceil(str.length / lineWidth);
@@ -22891,7 +22901,7 @@ var require_timestamp = __commonJS({
         }
         return new Date(date);
       },
-      stringify: ({ value }) => value.toISOString().replace(/(T00:00:00)?\.000Z$/, "")
+      stringify: ({ value }) => value?.toISOString().replace(/(T00:00:00)?\.000Z$/, "") ?? ""
     };
     exports2.floatTime = floatTime;
     exports2.intTime = intTime;
@@ -23593,8 +23603,7 @@ var require_resolve_props = __commonJS({
             if (token.source.endsWith(":"))
               onError(token.offset + token.source.length - 1, "BAD_ALIAS", "Anchor ending in : is ambiguous", true);
             anchor = token;
-            if (start === null)
-              start = token.offset;
+            start ?? (start = token.offset);
             atNewline = false;
             hasSpace = false;
             reqSpace = true;
@@ -23603,8 +23612,7 @@ var require_resolve_props = __commonJS({
             if (tag)
               onError(token, "MULTIPLE_TAGS", "A node can have at most one tag");
             tag = token;
-            if (start === null)
-              start = token.offset;
+            start ?? (start = token.offset);
             atNewline = false;
             hasSpace = false;
             reqSpace = true;
@@ -24175,8 +24183,8 @@ var require_compose_collection = __commonJS({
           ctx.schema.tags.push(Object.assign({}, kt, { default: false }));
           tag = kt;
         } else {
-          if (kt?.collection) {
-            onError(tagToken, "BAD_COLLECTION_TYPE", `${kt.tag} used for ${expType} collection, but expects ${kt.collection}`, true);
+          if (kt) {
+            onError(tagToken, "BAD_COLLECTION_TYPE", `${kt.tag} used for ${expType} collection, but expects ${kt.collection ?? "scalar"}`, true);
           } else {
             onError(tagToken, "TAG_RESOLVE_FAILED", `Unresolved tag: ${tagName}`, true);
           }
@@ -24685,8 +24693,7 @@ var require_util_empty_scalar_position = __commonJS({
     "use strict";
     function emptyScalarPosition(offset, before, pos) {
       if (before) {
-        if (pos === null)
-          pos = before.length;
+        pos ?? (pos = before.length);
         for (let i = pos - 1; i >= 0; --i) {
           let st = before[i];
           switch (st.type) {
@@ -24858,7 +24865,7 @@ var require_compose_doc = __commonJS({
 var require_composer = __commonJS({
   "node_modules/yaml/dist/compose/composer.js"(exports2) {
     "use strict";
-    var node_process = require("node:process");
+    var node_process = require("process");
     var directives = require_directives();
     var Document = require_Document();
     var errors = require_errors2();
@@ -26084,7 +26091,7 @@ var require_line_counter = __commonJS({
 var require_parser = __commonJS({
   "node_modules/yaml/dist/parse/parser.js"(exports2) {
     "use strict";
-    var node_process = require("node:process");
+    var node_process = require("process");
     var cst = require_cst();
     var lexer = require_lexer();
     function includesToken(list, type) {
@@ -26662,7 +26669,17 @@ var require_parser = __commonJS({
             default: {
               const bv = this.startBlockValue(map);
               if (bv) {
-                if (atMapIndent && bv.type !== "block-seq") {
+                if (bv.type === "block-seq") {
+                  if (!it.explicitKey && it.sep && !includesToken(it.sep, "newline")) {
+                    yield* this.pop({
+                      type: "error",
+                      offset: this.offset,
+                      message: "Unexpected block-seq-ind on same line with key",
+                      source: this.source
+                    });
+                    return;
+                  }
+                } else if (atMapIndent) {
                   map.items.push({ start });
                 }
                 this.stack.push(bv);
@@ -27091,7 +27108,7 @@ var require_package = __commonJS({
   "node_modules/dotenv/package.json"(exports2, module2) {
     module2.exports = {
       name: "dotenv",
-      version: "16.4.7",
+      version: "17.2.1",
       description: "Loads environment variables from .env file",
       main: "lib/main.js",
       types: "lib/main.d.ts",
@@ -27114,7 +27131,7 @@ var require_package = __commonJS({
         lint: "standard",
         pretest: "npm run lint && npm run dts-check",
         test: "tap run --allow-empty-coverage --disable-coverage --timeout=60000",
-        "test:coverage": "tap run --show-full-coverage --timeout=60000 --coverage-report=lcov",
+        "test:coverage": "tap run --show-full-coverage --timeout=60000 --coverage-report=text --coverage-report=lcov",
         prerelease: "npm test",
         release: "standard-version"
       },
@@ -27122,6 +27139,7 @@ var require_package = __commonJS({
         type: "git",
         url: "git://github.com/motdotla/dotenv.git"
       },
+      homepage: "https://github.com/motdotla/dotenv#readme",
       funding: "https://dotenvx.com",
       keywords: [
         "dotenv",
@@ -27162,6 +27180,36 @@ var require_main2 = __commonJS({
     var crypto = require("crypto");
     var packageJson = require_package();
     var version = packageJson.version;
+    var TIPS = [
+      "\u{1F510} encrypt with Dotenvx: https://dotenvx.com",
+      "\u{1F510} prevent committing .env to code: https://dotenvx.com/precommit",
+      "\u{1F510} prevent building .env in docker: https://dotenvx.com/prebuild",
+      "\u{1F4E1} observe env with Radar: https://dotenvx.com/radar",
+      "\u{1F4E1} auto-backup env with Radar: https://dotenvx.com/radar",
+      "\u{1F4E1} version env with Radar: https://dotenvx.com/radar",
+      "\u{1F6E0}\uFE0F  run anywhere with `dotenvx run -- yourcommand`",
+      "\u2699\uFE0F  specify custom .env file path with { path: '/custom/path/.env' }",
+      "\u2699\uFE0F  enable debug logging with { debug: true }",
+      "\u2699\uFE0F  override existing env vars with { override: true }",
+      "\u2699\uFE0F  suppress all logs with { quiet: true }",
+      "\u2699\uFE0F  write to custom object with { processEnv: myObject }",
+      "\u2699\uFE0F  load multiple .env files with { path: ['.env.local', '.env'] }"
+    ];
+    function _getRandomTip() {
+      return TIPS[Math.floor(Math.random() * TIPS.length)];
+    }
+    function parseBoolean(value) {
+      if (typeof value === "string") {
+        return !["false", "0", "no", "off", ""].includes(value.toLowerCase());
+      }
+      return Boolean(value);
+    }
+    function supportsAnsi() {
+      return process.stdout.isTTY;
+    }
+    function dim(text) {
+      return supportsAnsi() ? `\x1B[2m${text}\x1B[0m` : text;
+    }
     var LINE = /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(?:#.*)?(?:$|$)/mg;
     function parse3(src) {
       const obj = {};
@@ -27183,8 +27231,10 @@ var require_main2 = __commonJS({
       return obj;
     }
     function _parseVault(options) {
+      options = options || {};
       const vaultPath = _vaultPath(options);
-      const result = DotenvModule.configDotenv({ path: vaultPath });
+      options.path = vaultPath;
+      const result = DotenvModule.configDotenv(options);
       if (!result.parsed) {
         const err = new Error(`MISSING_DATA: Cannot parse ${vaultPath} for an unknown reason`);
         err.code = "MISSING_DATA";
@@ -27207,14 +27257,14 @@ var require_main2 = __commonJS({
       }
       return DotenvModule.parse(decrypted);
     }
-    function _log(message2) {
-      console.log(`[dotenv@${version}][INFO] ${message2}`);
-    }
     function _warn(message2) {
-      console.log(`[dotenv@${version}][WARN] ${message2}`);
+      console.error(`[dotenv@${version}][WARN] ${message2}`);
     }
     function _debug(message2) {
       console.log(`[dotenv@${version}][DEBUG] ${message2}`);
+    }
+    function _log(message2) {
+      console.log(`[dotenv@${version}] ${message2}`);
     }
     function _dotenvKey(options) {
       if (options && options.DOTENV_KEY && options.DOTENV_KEY.length > 0) {
@@ -27282,7 +27332,11 @@ var require_main2 = __commonJS({
       return envPath[0] === "~" ? path2.join(os.homedir(), envPath.slice(1)) : envPath;
     }
     function _configVault(options) {
-      _log("Loading env from encrypted .env.vault");
+      const debug3 = parseBoolean(process.env.DOTENV_CONFIG_DEBUG || options && options.debug);
+      const quiet = parseBoolean(process.env.DOTENV_CONFIG_QUIET || options && options.quiet);
+      if (debug3 || !quiet) {
+        _log("Loading env from encrypted .env.vault");
+      }
       const parsed = DotenvModule._parseVault(options);
       let processEnv = process.env;
       if (options && options.processEnv != null) {
@@ -27294,7 +27348,12 @@ var require_main2 = __commonJS({
     function configDotenv(options) {
       const dotenvPath = path2.resolve(process.cwd(), ".env");
       let encoding = "utf8";
-      const debug3 = Boolean(options && options.debug);
+      let processEnv = process.env;
+      if (options && options.processEnv != null) {
+        processEnv = options.processEnv;
+      }
+      let debug3 = parseBoolean(processEnv.DOTENV_CONFIG_DEBUG || options && options.debug);
+      let quiet = parseBoolean(processEnv.DOTENV_CONFIG_QUIET || options && options.quiet);
       if (options && options.encoding) {
         encoding = options.encoding;
       } else {
@@ -27326,11 +27385,25 @@ var require_main2 = __commonJS({
           lastError = e;
         }
       }
-      let processEnv = process.env;
-      if (options && options.processEnv != null) {
-        processEnv = options.processEnv;
+      const populated = DotenvModule.populate(processEnv, parsedAll, options);
+      debug3 = parseBoolean(processEnv.DOTENV_CONFIG_DEBUG || debug3);
+      quiet = parseBoolean(processEnv.DOTENV_CONFIG_QUIET || quiet);
+      if (debug3 || !quiet) {
+        const keysCount = Object.keys(populated).length;
+        const shortPaths = [];
+        for (const filePath of optionPaths) {
+          try {
+            const relative2 = path2.relative(process.cwd(), filePath);
+            shortPaths.push(relative2);
+          } catch (e) {
+            if (debug3) {
+              _debug(`Failed to load ${filePath} ${e.message}`);
+            }
+            lastError = e;
+          }
+        }
+        _log(`injecting env (${keysCount}) from ${shortPaths.join(",")} ${dim(`-- tip: ${_getRandomTip()}`)}`);
       }
-      DotenvModule.populate(processEnv, parsedAll, options);
       if (lastError) {
         return { parsed: parsedAll, error: lastError };
       } else {
@@ -27378,6 +27451,7 @@ var require_main2 = __commonJS({
     function populate(processEnv, parsed, options = {}) {
       const debug3 = Boolean(options && options.debug);
       const override = Boolean(options && options.override);
+      const populated = {};
       if (typeof parsed !== "object") {
         const err = new Error("OBJECT_REQUIRED: Please check the processEnv argument being passed to populate");
         err.code = "OBJECT_REQUIRED";
@@ -27387,6 +27461,7 @@ var require_main2 = __commonJS({
         if (Object.prototype.hasOwnProperty.call(processEnv, key)) {
           if (override === true) {
             processEnv[key] = parsed[key];
+            populated[key] = parsed[key];
           }
           if (debug3) {
             if (override === true) {
@@ -27397,8 +27472,10 @@ var require_main2 = __commonJS({
           }
         } else {
           processEnv[key] = parsed[key];
+          populated[key] = parsed[key];
         }
       }
+      return populated;
     }
     var DotenvModule = {
       configDotenv,
