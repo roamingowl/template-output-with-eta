@@ -38,11 +38,11 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "1.11.1",
-    "@date-fns/utc": "2.1.0",
+    "@date-fns/utc": "2.1.1",
     "date-fns": "4.1.0",
     "dotenv": "17.2.1",
     "eta": "3.5.0",
-    "yaml": "2.8.0"
+    "yaml": "2.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
