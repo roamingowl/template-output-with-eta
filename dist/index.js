@@ -65,7 +65,7 @@ var require_utils = __commonJS({
 var require_command = __commonJS({
   "node_modules/@actions/core/lib/command.js"(exports2) {
     "use strict";
-    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -74,13 +74,13 @@ var require_command = __commonJS({
         } };
       }
       Object.defineProperty(o, k2, desc);
-    } : function(o, m, k, k2) {
+    }) : (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       o[k2] = m[k];
-    });
-    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+    }));
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? (function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
-    } : function(o, v) {
+    }) : function(o, v) {
       o["default"] = v;
     });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
@@ -151,7 +151,7 @@ var require_command = __commonJS({
 var require_file_command = __commonJS({
   "node_modules/@actions/core/lib/file-command.js"(exports2) {
     "use strict";
-    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -160,13 +160,13 @@ var require_file_command = __commonJS({
         } };
       }
       Object.defineProperty(o, k2, desc);
-    } : function(o, m, k, k2) {
+    }) : (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       o[k2] = m[k];
-    });
-    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+    }));
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? (function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
-    } : function(o, v) {
+    }) : function(o, v) {
       o["default"] = v;
     });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
@@ -13720,7 +13720,7 @@ var require_fetch = __commonJS({
             fetchParams.controller.terminate(e);
           }
         };
-        requestBody = async function* () {
+        requestBody = (async function* () {
           try {
             for await (const bytes of request.body.stream) {
               yield* processBodyChunk(bytes);
@@ -13729,7 +13729,7 @@ var require_fetch = __commonJS({
           } catch (err) {
             processBodyError(err);
           }
-        }();
+        })();
       }
       try {
         const { body, status, statusText, headersList, socket } = await dispatch({ body: requestBody });
@@ -17294,7 +17294,7 @@ var require_undici = __commonJS({
 var require_lib = __commonJS({
   "node_modules/@actions/http-client/lib/index.js"(exports2) {
     "use strict";
-    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -17303,13 +17303,13 @@ var require_lib = __commonJS({
         } };
       }
       Object.defineProperty(o, k2, desc);
-    } : function(o, m, k, k2) {
+    }) : (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       o[k2] = m[k];
-    });
-    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+    }));
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? (function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
-    } : function(o, v) {
+    }) : function(o, v) {
       o["default"] = v;
     });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
@@ -18409,7 +18409,7 @@ var require_summary = __commonJS({
 var require_path_utils = __commonJS({
   "node_modules/@actions/core/lib/path-utils.js"(exports2) {
     "use strict";
-    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -18418,13 +18418,13 @@ var require_path_utils = __commonJS({
         } };
       }
       Object.defineProperty(o, k2, desc);
-    } : function(o, m, k, k2) {
+    }) : (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       o[k2] = m[k];
-    });
-    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+    }));
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? (function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
-    } : function(o, v) {
+    }) : function(o, v) {
       o["default"] = v;
     });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
@@ -18458,18 +18458,18 @@ var require_path_utils = __commonJS({
 var require_io_util = __commonJS({
   "node_modules/@actions/io/lib/io-util.js"(exports2) {
     "use strict";
-    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       Object.defineProperty(o, k2, { enumerable: true, get: function() {
         return m[k];
       } });
-    } : function(o, m, k, k2) {
+    }) : (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       o[k2] = m[k];
-    });
-    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+    }));
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? (function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
-    } : function(o, v) {
+    }) : function(o, v) {
       o["default"] = v;
     });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
@@ -18631,18 +18631,18 @@ var require_io_util = __commonJS({
 var require_io = __commonJS({
   "node_modules/@actions/io/lib/io.js"(exports2) {
     "use strict";
-    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       Object.defineProperty(o, k2, { enumerable: true, get: function() {
         return m[k];
       } });
-    } : function(o, m, k, k2) {
+    }) : (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       o[k2] = m[k];
-    });
-    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+    }));
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? (function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
-    } : function(o, v) {
+    }) : function(o, v) {
       o["default"] = v;
     });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
@@ -18879,18 +18879,18 @@ var require_io = __commonJS({
 var require_toolrunner = __commonJS({
   "node_modules/@actions/exec/lib/toolrunner.js"(exports2) {
     "use strict";
-    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       Object.defineProperty(o, k2, { enumerable: true, get: function() {
         return m[k];
       } });
-    } : function(o, m, k, k2) {
+    }) : (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       o[k2] = m[k];
-    });
-    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+    }));
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? (function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
-    } : function(o, v) {
+    }) : function(o, v) {
       o["default"] = v;
     });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
@@ -19363,18 +19363,18 @@ var require_toolrunner = __commonJS({
 var require_exec = __commonJS({
   "node_modules/@actions/exec/lib/exec.js"(exports2) {
     "use strict";
-    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       Object.defineProperty(o, k2, { enumerable: true, get: function() {
         return m[k];
       } });
-    } : function(o, m, k, k2) {
+    }) : (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       o[k2] = m[k];
-    });
-    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+    }));
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? (function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
-    } : function(o, v) {
+    }) : function(o, v) {
       o["default"] = v;
     });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
@@ -19470,7 +19470,7 @@ var require_exec = __commonJS({
 var require_platform = __commonJS({
   "node_modules/@actions/core/lib/platform.js"(exports2) {
     "use strict";
-    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -19479,13 +19479,13 @@ var require_platform = __commonJS({
         } };
       }
       Object.defineProperty(o, k2, desc);
-    } : function(o, m, k, k2) {
+    }) : (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       o[k2] = m[k];
-    });
-    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+    }));
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? (function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
-    } : function(o, v) {
+    }) : function(o, v) {
       o["default"] = v;
     });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
@@ -19589,7 +19589,7 @@ var require_platform = __commonJS({
 var require_core = __commonJS({
   "node_modules/@actions/core/lib/core.js"(exports2) {
     "use strict";
-    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -19598,13 +19598,13 @@ var require_core = __commonJS({
         } };
       }
       Object.defineProperty(o, k2, desc);
-    } : function(o, m, k, k2) {
+    }) : (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       o[k2] = m[k];
-    });
-    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+    }));
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? (function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
-    } : function(o, v) {
+    }) : function(o, v) {
       o["default"] = v;
     });
     var __importStar = exports2 && exports2.__importStar || function(mod) {
@@ -21049,7 +21049,7 @@ ${indent}`) + "'";
     }
     function blockString({ comment, type, value }, ctx, onComment, onChompKeep) {
       const { blockQuote, commentString, lineWidth } = ctx.options;
-      if (!blockQuote || /\n[\t ]+$/.test(value) || /^\s*$/.test(value)) {
+      if (!blockQuote || /\n[\t ]+$/.test(value)) {
         return quotedString(value, ctx);
       }
       const indent = ctx.indent || (ctx.forceBlockIndent || containsDocumentMarker(value) ? "  " : "");
@@ -27108,7 +27108,7 @@ var require_package = __commonJS({
   "node_modules/dotenv/package.json"(exports2, module2) {
     module2.exports = {
       name: "dotenv",
-      version: "17.2.1",
+      version: "17.2.2",
       description: "Loads environment variables from .env file",
       main: "lib/main.js",
       types: "lib/main.d.ts",
@@ -27501,33 +27501,9 @@ var require_main2 = __commonJS({
 var fs2 = __toESM(require("fs"));
 var core2 = __toESM(require_core());
 
-// node_modules/eta/dist/eta.module.mjs
-var path = __toESM(require("node:path"), 1);
+// node_modules/eta/dist/index.js
 var fs = __toESM(require("node:fs"), 1);
-var Cacher = class {
-  constructor(cache) {
-    this.cache = void 0;
-    this.cache = cache;
-  }
-  define(key, val) {
-    this.cache[key] = val;
-  }
-  get(key) {
-    return this.cache[key];
-  }
-  remove(key) {
-    delete this.cache[key];
-  }
-  reset() {
-    this.cache = {};
-  }
-  load(cacheObj) {
-    this.cache = {
-      ...this.cache,
-      ...cacheObj
-    };
-  }
-};
+var path = __toESM(require("node:path"), 1);
 var EtaError = class extends Error {
   constructor(message2) {
     super(message2);
@@ -27565,39 +27541,75 @@ function ParseErr(message2, str, indx) {
   message2 += " at line " + lineNo + " col " + colNo + ":\n\n  " + str.split(/\n/)[lineNo - 1] + "\n  " + Array(colNo).join(" ") + "^";
   throw new EtaParseError(message2);
 }
-function RuntimeErr(originalError, str, lineNo, path2) {
+function RuntimeErr(originalError, str, lineNo, path$1) {
   const lines = str.split("\n");
   const start = Math.max(lineNo - 3, 0);
   const end = Math.min(lines.length, lineNo + 3);
-  const filename = path2;
-  const context = lines.slice(start, end).map(function(line, i) {
+  const filename = path$1;
+  const context = lines.slice(start, end).map((line, i) => {
     const curr = i + start + 1;
-    return (curr == lineNo ? " >> " : "    ") + curr + "| " + line;
+    return (curr === lineNo ? " >> " : "    ") + curr + "| " + line;
   }).join("\n");
   const header = filename ? filename + ":" + lineNo + "\n" : "line " + lineNo + "\n";
   const err = new EtaRuntimeError(header + context + "\n\n" + originalError.message);
   err.name = originalError.name;
   throw err;
 }
-var AsyncFunction = async function() {
-}.constructor;
+function readFile(path$1) {
+  let res = "";
+  try {
+    res = fs.readFileSync(path$1, "utf8");
+  } catch (err) {
+    if (err?.code === "ENOENT") throw new EtaFileResolutionError(`Could not find template: ${path$1}`);
+    else throw err;
+  }
+  return res;
+}
+function resolvePath(templatePath, options) {
+  let resolvedFilePath = "";
+  const views = this.config.views;
+  if (!views) throw new EtaFileResolutionError("Views directory is not defined");
+  const baseFilePath = options?.filepath;
+  const defaultExtension = this.config.defaultExtension === void 0 ? ".eta" : this.config.defaultExtension;
+  const cacheIndex = JSON.stringify({
+    filename: baseFilePath,
+    path: templatePath,
+    views: this.config.views
+  });
+  templatePath += path.extname(templatePath) ? "" : defaultExtension;
+  if (baseFilePath) {
+    if (this.config.cacheFilepaths && this.filepathCache[cacheIndex]) return this.filepathCache[cacheIndex];
+    if (absolutePathRegExp.exec(templatePath)?.length) {
+      const formattedPath = templatePath.replace(/^\/*|^\\*/, "");
+      resolvedFilePath = path.join(views, formattedPath);
+    } else resolvedFilePath = path.join(path.dirname(baseFilePath), templatePath);
+  } else resolvedFilePath = path.join(views, templatePath);
+  if (dirIsChild(views, resolvedFilePath)) {
+    if (baseFilePath && this.config.cacheFilepaths) this.filepathCache[cacheIndex] = resolvedFilePath;
+    return resolvedFilePath;
+  } else throw new EtaFileResolutionError(`Template '${templatePath}' is not in the views directory`);
+}
+function dirIsChild(parent, dir) {
+  const relative2 = path.relative(parent, dir);
+  return relative2 && !relative2.startsWith("..") && !path.isAbsolute(relative2);
+}
+var absolutePathRegExp = /^\\|^\//;
+var AsyncFunction = (async () => {
+}).constructor;
 function compile(str, options) {
   const config = this.config;
-  const ctor = options && options.async ? AsyncFunction : Function;
+  const ctor = options?.async ? AsyncFunction : Function;
   try {
     return new ctor(config.varName, "options", this.compileToString.call(this, str, options));
   } catch (e) {
-    if (e instanceof SyntaxError) {
-      throw new EtaParseError("Bad template syntax\n\n" + e.message + "\n" + Array(e.message.length + 1).join("=") + "\n" + this.compileToString.call(this, str, options) + "\n");
-    } else {
-      throw e;
-    }
+    if (e instanceof SyntaxError) throw new EtaParseError("Bad template syntax\n\n" + e.message + "\n" + Array(e.message.length + 1).join("=") + "\n" + this.compileToString.call(this, str, options) + "\n");
+    else throw e;
   }
 }
 function compileToString(str, options) {
   const config = this.config;
-  const isAsync = options && options.async;
-  const compileBody2 = this.compileBody;
+  const isAsync = options?.async;
+  const compileBody$1 = this.compileBody;
   const buffer = this.parse.call(this, str);
   let res = `${config.functionHeader}
 let include = (template, data) => this.render(template, data, options);
@@ -27610,20 +27622,16 @@ function layout(path, data) {
   __eta.layoutData = data;
 }${config.debug ? "try {" : ""}${config.useWith ? "with(" + config.varName + "||{}){" : ""}
 
-${compileBody2.call(this, buffer)}
+${compileBody$1.call(this, buffer)}
 if (__eta.layout) {
   __eta.res = ${isAsync ? "await includeAsync" : "include"} (__eta.layout, {...${config.varName}, body: __eta.res, ...__eta.layoutData});
 }
 ${config.useWith ? "}" : ""}${config.debug ? "} catch (e) { this.RuntimeErr(e, __eta.templateStr, __eta.line, options.filepath) }" : ""}
 return __eta.res;
 `;
-  if (config.plugins) {
-    for (let i = 0; i < config.plugins.length; i++) {
-      const plugin = config.plugins[i];
-      if (plugin.processFnString) {
-        res = plugin.processFnString(res, config);
-      }
-    }
+  if (config.plugins) for (let i = 0; i < config.plugins.length; i++) {
+    const plugin = config.plugins[i];
+    if (plugin.processFnString) res = plugin.processFnString(res, config);
   }
   return res;
 }
@@ -27632,31 +27640,21 @@ function compileBody(buff) {
   let i = 0;
   const buffLength = buff.length;
   let returnStr = "";
-  for (i; i < buffLength; i++) {
+  for (; i < buffLength; i++) {
     const currentBlock = buff[i];
-    if (typeof currentBlock === "string") {
-      const str = currentBlock;
-      returnStr += "__eta.res+='" + str + "'\n";
-    } else {
+    if (typeof currentBlock === "string") returnStr += "__eta.res+='" + currentBlock + "'\n";
+    else {
       const type = currentBlock.t;
       let content = currentBlock.val || "";
       if (config.debug) returnStr += "__eta.line=" + currentBlock.lineNo + "\n";
       if (type === "r") {
-        if (config.autoFilter) {
-          content = "__eta.f(" + content + ")";
-        }
+        if (config.autoFilter) content = "__eta.f(" + content + ")";
         returnStr += "__eta.res+=" + content + "\n";
       } else if (type === "i") {
-        if (config.autoFilter) {
-          content = "__eta.f(" + content + ")";
-        }
-        if (config.autoEscape) {
-          content = "__eta.e(" + content + ")";
-        }
+        if (config.autoFilter) content = "__eta.f(" + content + ")";
+        if (config.autoEscape) content = "__eta.e(" + content + ")";
         returnStr += "__eta.res+=" + content + "\n";
-      } else if (type === "e") {
-        returnStr += content + "\n";
-      }
+      } else if (type === "e") returnStr += content + "\n";
     }
   }
   return returnStr;
@@ -27667,31 +27665,15 @@ function trimWS(str, config, wsLeft, wsRight) {
   if (Array.isArray(config.autoTrim)) {
     leftTrim = config.autoTrim[1];
     rightTrim = config.autoTrim[0];
-  } else {
-    leftTrim = rightTrim = config.autoTrim;
-  }
-  if (wsLeft || wsLeft === false) {
-    leftTrim = wsLeft;
-  }
-  if (wsRight || wsRight === false) {
-    rightTrim = wsRight;
-  }
-  if (!rightTrim && !leftTrim) {
-    return str;
-  }
-  if (leftTrim === "slurp" && rightTrim === "slurp") {
-    return str.trim();
-  }
-  if (leftTrim === "_" || leftTrim === "slurp") {
-    str = str.trimStart();
-  } else if (leftTrim === "-" || leftTrim === "nl") {
-    str = str.replace(/^(?:\r\n|\n|\r)/, "");
-  }
-  if (rightTrim === "_" || rightTrim === "slurp") {
-    str = str.trimEnd();
-  } else if (rightTrim === "-" || rightTrim === "nl") {
-    str = str.replace(/(?:\r\n|\n|\r)$/, "");
-  }
+  } else leftTrim = rightTrim = config.autoTrim;
+  if (wsLeft || wsLeft === false) leftTrim = wsLeft;
+  if (wsRight || wsRight === false) rightTrim = wsRight;
+  if (!rightTrim && !leftTrim) return str;
+  if (leftTrim === "slurp" && rightTrim === "slurp") return str.trim();
+  if (leftTrim === "_" || leftTrim === "slurp") str = str.trimStart();
+  else if (leftTrim === "-" || leftTrim === "nl") str = str.replace(/^(?:\r\n|\n|\r)/, "");
+  if (rightTrim === "_" || rightTrim === "slurp") str = str.trimEnd();
+  else if (rightTrim === "-" || rightTrim === "nl") str = str.replace(/(?:\r\n|\n|\r)$/, "");
   return str;
 }
 var escMap = {
@@ -27706,11 +27688,8 @@ function replaceChar(s) {
 }
 function XMLEscape(str) {
   const newStr = String(str);
-  if (/[&<>"']/.test(newStr)) {
-    return newStr.replace(/[&<>"']/g, replaceChar);
-  } else {
-    return newStr;
-  }
+  if (/[&<>"']/.test(newStr)) return newStr.replace(/[&<>"']/g, replaceChar);
+  else return newStr;
 }
 var defaultConfig = {
   autoEscape: true,
@@ -27720,7 +27699,6 @@ var defaultConfig = {
   cacheFilepaths: true,
   debug: false,
   escapeFunction: XMLEscape,
-  // default filter function (not used unless enables) just stringifies the input
   filterFunction: (val) => String(val),
   functionHeader: "",
   parse: {
@@ -27750,43 +27728,31 @@ function parse(str) {
   let trimLeftOfNextStr = false;
   let lastIndex = 0;
   const parseOptions = config.parse;
-  if (config.plugins) {
-    for (let i = 0; i < config.plugins.length; i++) {
-      const plugin = config.plugins[i];
-      if (plugin.processTemplate) {
-        str = plugin.processTemplate(str, config);
-      }
-    }
+  if (config.plugins) for (let i = 0; i < config.plugins.length; i++) {
+    const plugin = config.plugins[i];
+    if (plugin.processTemplate) str = plugin.processTemplate(str, config);
   }
-  if (config.rmWhitespace) {
-    str = str.replace(/[\r\n]+/g, "\n").replace(/^\s+|\s+$/gm, "");
-  }
+  if (config.rmWhitespace) str = str.replace(/[\r\n]+/g, "\n").replace(/^\s+|\s+$/gm, "");
   templateLitReg.lastIndex = 0;
   singleQuoteReg.lastIndex = 0;
   doubleQuoteReg.lastIndex = 0;
   function pushString(strng, shouldTrimRightOfString) {
     if (strng) {
-      strng = trimWS(
-        strng,
-        config,
-        trimLeftOfNextStr,
-        // this will only be false on the first str, the next ones will be null or undefined
-        shouldTrimRightOfString
-      );
+      strng = trimWS(strng, config, trimLeftOfNextStr, shouldTrimRightOfString);
       if (strng) {
         strng = strng.replace(/\\|'/g, "\\$&").replace(/\r\n|\n|\r/g, "\\n");
         buffer.push(strng);
       }
     }
   }
-  const prefixes = [parseOptions.exec, parseOptions.interpolate, parseOptions.raw].reduce(function(accumulator, prefix) {
-    if (accumulator && prefix) {
-      return accumulator + "|" + escapeRegExp(prefix);
-    } else if (prefix) {
-      return escapeRegExp(prefix);
-    } else {
-      return accumulator;
-    }
+  const prefixes = [
+    parseOptions.exec,
+    parseOptions.interpolate,
+    parseOptions.raw
+  ].reduce((accumulator, prefix) => {
+    if (accumulator && prefix) return accumulator + "|" + escapeRegExp(prefix);
+    else if (prefix) return escapeRegExp(prefix);
+    else return accumulator;
   }, "");
   const parseOpenReg = new RegExp(escapeRegExp(config.tags[0]) + "(-|_)?\\s*(" + prefixes + ")?\\s*", "g");
   const parseCloseReg = new RegExp("'|\"|`|\\/\\*|(\\s*(-|_)?" + escapeRegExp(config.tags[1]) + ")", "g");
@@ -27800,80 +27766,54 @@ function parse(str) {
     parseCloseReg.lastIndex = lastIndex;
     let closeTag;
     let currentObj = false;
-    while (closeTag = parseCloseReg.exec(str)) {
-      if (closeTag[1]) {
-        const content = str.slice(lastIndex, closeTag.index);
-        parseOpenReg.lastIndex = lastIndex = parseCloseReg.lastIndex;
-        trimLeftOfNextStr = closeTag[2];
-        const currentType = prefix === parseOptions.exec ? "e" : prefix === parseOptions.raw ? "r" : prefix === parseOptions.interpolate ? "i" : "";
-        currentObj = {
-          t: currentType,
-          val: content
-        };
-        break;
-      } else {
-        const char = closeTag[0];
-        if (char === "/*") {
-          const commentCloseInd = str.indexOf("*/", parseCloseReg.lastIndex);
-          if (commentCloseInd === -1) {
-            ParseErr("unclosed comment", str, closeTag.index);
-          }
-          parseCloseReg.lastIndex = commentCloseInd;
-        } else if (char === "'") {
-          singleQuoteReg.lastIndex = closeTag.index;
-          const singleQuoteMatch = singleQuoteReg.exec(str);
-          if (singleQuoteMatch) {
-            parseCloseReg.lastIndex = singleQuoteReg.lastIndex;
-          } else {
-            ParseErr("unclosed string", str, closeTag.index);
-          }
-        } else if (char === '"') {
-          doubleQuoteReg.lastIndex = closeTag.index;
-          const doubleQuoteMatch = doubleQuoteReg.exec(str);
-          if (doubleQuoteMatch) {
-            parseCloseReg.lastIndex = doubleQuoteReg.lastIndex;
-          } else {
-            ParseErr("unclosed string", str, closeTag.index);
-          }
-        } else if (char === "`") {
-          templateLitReg.lastIndex = closeTag.index;
-          const templateLitMatch = templateLitReg.exec(str);
-          if (templateLitMatch) {
-            parseCloseReg.lastIndex = templateLitReg.lastIndex;
-          } else {
-            ParseErr("unclosed string", str, closeTag.index);
-          }
-        }
+    while (closeTag = parseCloseReg.exec(str)) if (closeTag[1]) {
+      const content = str.slice(lastIndex, closeTag.index);
+      parseOpenReg.lastIndex = lastIndex = parseCloseReg.lastIndex;
+      trimLeftOfNextStr = closeTag[2];
+      currentObj = {
+        t: prefix === parseOptions.exec ? "e" : prefix === parseOptions.raw ? "r" : prefix === parseOptions.interpolate ? "i" : "",
+        val: content
+      };
+      break;
+    } else {
+      const char = closeTag[0];
+      if (char === "/*") {
+        const commentCloseInd = str.indexOf("*/", parseCloseReg.lastIndex);
+        if (commentCloseInd === -1) ParseErr("unclosed comment", str, closeTag.index);
+        parseCloseReg.lastIndex = commentCloseInd;
+      } else if (char === "'") {
+        singleQuoteReg.lastIndex = closeTag.index;
+        if (singleQuoteReg.exec(str)) parseCloseReg.lastIndex = singleQuoteReg.lastIndex;
+        else ParseErr("unclosed string", str, closeTag.index);
+      } else if (char === '"') {
+        doubleQuoteReg.lastIndex = closeTag.index;
+        if (doubleQuoteReg.exec(str)) parseCloseReg.lastIndex = doubleQuoteReg.lastIndex;
+        else ParseErr("unclosed string", str, closeTag.index);
+      } else if (char === "`") {
+        templateLitReg.lastIndex = closeTag.index;
+        if (templateLitReg.exec(str)) parseCloseReg.lastIndex = templateLitReg.lastIndex;
+        else ParseErr("unclosed string", str, closeTag.index);
       }
     }
     if (currentObj) {
-      if (config.debug) {
-        currentObj.lineNo = getLineNo(str, m.index);
-      }
+      if (config.debug) currentObj.lineNo = getLineNo(str, m.index);
       buffer.push(currentObj);
-    } else {
-      ParseErr("unclosed tag", str, m.index);
-    }
+    } else ParseErr("unclosed tag", str, m.index);
   }
   pushString(str.slice(lastIndex, str.length), false);
-  if (config.plugins) {
-    for (let i = 0; i < config.plugins.length; i++) {
-      const plugin = config.plugins[i];
-      if (plugin.processAST) {
-        buffer = plugin.processAST(buffer, config);
-      }
-    }
+  if (config.plugins) for (let i = 0; i < config.plugins.length; i++) {
+    const plugin = config.plugins[i];
+    if (plugin.processAST) buffer = plugin.processAST(buffer, config);
   }
   return buffer;
 }
 function handleCache(template, options) {
-  const templateStore = options && options.async ? this.templatesAsync : this.templatesSync;
+  const templateStore = options?.async ? this.templatesAsync : this.templatesSync;
   if (this.resolvePath && this.readFile && !template.startsWith("@")) {
     const templatePath = options.filepath;
     const cachedTemplate = templateStore.get(templatePath);
-    if (this.config.cache && cachedTemplate) {
-      return cachedTemplate;
-    } else {
+    if (this.config.cache && cachedTemplate) return cachedTemplate;
+    else {
       const templateString = this.readFile(templatePath);
       const templateFn = this.compile(templateString, options);
       if (this.config.cache) templateStore.define(templatePath, templateFn);
@@ -27881,11 +27821,8 @@ function handleCache(template, options) {
     }
   } else {
     const cachedTemplate = templateStore.get(template);
-    if (cachedTemplate) {
-      return cachedTemplate;
-    } else {
-      throw new EtaNameResolutionError("Failed to get template '" + template + "'");
-    }
+    if (cachedTemplate) return cachedTemplate;
+    else throw new EtaNameResolutionError(`Failed to get template '${template}'`);
   }
 }
 function render(template, data, meta) {
@@ -27895,15 +27832,10 @@ function render(template, data, meta) {
     async: false
   };
   if (typeof template === "string") {
-    if (this.resolvePath && this.readFile && !template.startsWith("@")) {
-      options.filepath = this.resolvePath(template, options);
-    }
+    if (this.resolvePath && this.readFile && !template.startsWith("@")) options.filepath = this.resolvePath(template, options);
     templateFn = handleCache.call(this, template, options);
-  } else {
-    templateFn = template;
-  }
-  const res = templateFn.call(this, data, options);
-  return res;
+  } else templateFn = template;
+  return templateFn.call(this, data, options);
 }
 function renderAsync(template, data, meta) {
   let templateFn;
@@ -27912,57 +27844,66 @@ function renderAsync(template, data, meta) {
     async: true
   };
   if (typeof template === "string") {
-    if (this.resolvePath && this.readFile && !template.startsWith("@")) {
-      options.filepath = this.resolvePath(template, options);
-    }
+    if (this.resolvePath && this.readFile && !template.startsWith("@")) options.filepath = this.resolvePath(template, options);
     templateFn = handleCache.call(this, template, options);
-  } else {
-    templateFn = template;
-  }
+  } else templateFn = template;
   const res = templateFn.call(this, data, options);
   return Promise.resolve(res);
 }
 function renderString(template, data) {
-  const templateFn = this.compile(template, {
-    async: false
-  });
+  const templateFn = this.compile(template, { async: false });
   return render.call(this, templateFn, data);
 }
 function renderStringAsync(template, data) {
-  const templateFn = this.compile(template, {
-    async: true
-  });
+  const templateFn = this.compile(template, { async: true });
   return renderAsync.call(this, templateFn, data);
 }
+var Cacher = class {
+  constructor(cache) {
+    this.cache = cache;
+  }
+  define(key, val) {
+    this.cache[key] = val;
+  }
+  get(key) {
+    return this.cache[key];
+  }
+  remove(key) {
+    delete this.cache[key];
+  }
+  reset() {
+    this.cache = {};
+  }
+  load(cacheObj) {
+    this.cache = {
+      ...this.cache,
+      ...cacheObj
+    };
+  }
+};
 var Eta$1 = class {
   constructor(customConfig) {
-    this.config = void 0;
-    this.RuntimeErr = RuntimeErr;
-    this.compile = compile;
-    this.compileToString = compileToString;
-    this.compileBody = compileBody;
-    this.parse = parse;
-    this.render = render;
-    this.renderAsync = renderAsync;
-    this.renderString = renderString;
-    this.renderStringAsync = renderStringAsync;
-    this.filepathCache = {};
-    this.templatesSync = new Cacher({});
-    this.templatesAsync = new Cacher({});
-    this.resolvePath = null;
-    this.readFile = null;
-    if (customConfig) {
-      this.config = {
-        ...defaultConfig,
-        ...customConfig
-      };
-    } else {
-      this.config = {
-        ...defaultConfig
-      };
-    }
+    if (customConfig) this.config = {
+      ...defaultConfig,
+      ...customConfig
+    };
+    else this.config = { ...defaultConfig };
   }
-  // METHODS
+  config;
+  RuntimeErr = RuntimeErr;
+  compile = compile;
+  compileToString = compileToString;
+  compileBody = compileBody;
+  parse = parse;
+  render = render;
+  renderAsync = renderAsync;
+  renderString = renderString;
+  renderStringAsync = renderStringAsync;
+  filepathCache = {};
+  templatesSync = new Cacher({});
+  templatesAsync = new Cacher({});
+  resolvePath = null;
+  readFile = null;
   configure(customConfig) {
     this.config = {
       ...this.config,
@@ -27979,79 +27920,17 @@ var Eta$1 = class {
     };
   }
   loadTemplate(name, template, options) {
-    if (typeof template === "string") {
-      const templates = options && options.async ? this.templatesAsync : this.templatesSync;
-      templates.define(name, this.compile(template, options));
-    } else {
+    if (typeof template === "string") (options?.async ? this.templatesAsync : this.templatesSync).define(name, this.compile(template, options));
+    else {
       let templates = this.templatesSync;
-      if (template.constructor.name === "AsyncFunction" || options && options.async) {
-        templates = this.templatesAsync;
-      }
+      if (template.constructor.name === "AsyncFunction" || options?.async) templates = this.templatesAsync;
       templates.define(name, template);
     }
   }
 };
-function readFile(path2) {
-  let res = "";
-  try {
-    res = fs.readFileSync(path2, "utf8");
-  } catch (err) {
-    if ((err == null ? void 0 : err.code) === "ENOENT") {
-      throw new EtaFileResolutionError(`Could not find template: ${path2}`);
-    } else {
-      throw err;
-    }
-  }
-  return res;
-}
-function resolvePath(templatePath, options) {
-  let resolvedFilePath = "";
-  const views = this.config.views;
-  if (!views) {
-    throw new EtaFileResolutionError("Views directory is not defined");
-  }
-  const baseFilePath = options && options.filepath;
-  const defaultExtension = this.config.defaultExtension === void 0 ? ".eta" : this.config.defaultExtension;
-  const cacheIndex = JSON.stringify({
-    filename: baseFilePath,
-    path: templatePath,
-    views: this.config.views
-  });
-  templatePath += path.extname(templatePath) ? "" : defaultExtension;
-  if (baseFilePath) {
-    if (this.config.cacheFilepaths && this.filepathCache[cacheIndex]) {
-      return this.filepathCache[cacheIndex];
-    }
-    const absolutePathTest = absolutePathRegExp.exec(templatePath);
-    if (absolutePathTest && absolutePathTest.length) {
-      const formattedPath = templatePath.replace(/^\/*|^\\*/, "");
-      resolvedFilePath = path.join(views, formattedPath);
-    } else {
-      resolvedFilePath = path.join(path.dirname(baseFilePath), templatePath);
-    }
-  } else {
-    resolvedFilePath = path.join(views, templatePath);
-  }
-  if (dirIsChild(views, resolvedFilePath)) {
-    if (baseFilePath && this.config.cacheFilepaths) {
-      this.filepathCache[cacheIndex] = resolvedFilePath;
-    }
-    return resolvedFilePath;
-  } else {
-    throw new EtaFileResolutionError(`Template '${templatePath}' is not in the views directory`);
-  }
-}
-function dirIsChild(parent, dir) {
-  const relative2 = path.relative(parent, dir);
-  return relative2 && !relative2.startsWith("..") && !path.isAbsolute(relative2);
-}
-var absolutePathRegExp = /^\\|^\//;
 var Eta = class extends Eta$1 {
-  constructor(...args) {
-    super(...args);
-    this.readFile = readFile;
-    this.resolvePath = resolvePath;
-  }
+  readFile = readFile;
+  resolvePath = resolvePath;
 };
 
 // node_modules/date-fns/index.js

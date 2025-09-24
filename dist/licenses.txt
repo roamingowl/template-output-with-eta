@@ -33,7 +33,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 The following npm package may be included in this product:
 
- - dotenv@17.2.1
+ - dotenv@17.2.2
 
 This package contains the following license:
 
@@ -65,11 +65,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 The following npm package may be included in this product:
 
- - eta@3.5.0
+ - eta@4.0.1
 
 This package contains the following license:
 
-Copyright 2023 Ben Gubler <nebrelbug@gmail.com>
+Copyright 2025 Ben Gubler <nebrelbug@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -109,7 +109,7 @@ IN THE SOFTWARE.
 
 The following npm package may be included in this product:
 
- - yaml@2.8.0
+ - yaml@2.8.1
 
 This package contains the following license:
 
@@ -161,7 +161,7 @@ SOFTWARE.
 
 The following npm package may be included in this product:
 
- - @date-fns/utc@2.1.0
+ - @date-fns/utc@2.1.1
 
 This package contains the following license:
 
