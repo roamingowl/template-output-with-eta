@@ -27502,7 +27502,7 @@ var require_main2 = __commonJS({
 var fs2 = __toESM(require("fs"));
 var core2 = __toESM(require_core());
 
-// node_modules/eta/dist/index.js
+// node_modules/eta/dist/index.mjs
 var fs = __toESM(require("node:fs"), 1);
 var path = __toESM(require("node:path"), 1);
 var EtaError = class extends Error {
@@ -27551,9 +27551,9 @@ function RuntimeErr(originalError, str, lineNo, path$1) {
     const curr = i + start + 1;
     return (curr === lineNo ? " >> " : "    ") + curr + "| " + line;
   }).join("\n");
-  const header = filename ? filename + ":" + lineNo + "\n" : "line " + lineNo + "\n";
-  const err = new EtaRuntimeError(header + context + "\n\n" + originalError.message);
+  const err = new EtaRuntimeError((filename ? filename + ":" + lineNo + "\n" : "line " + lineNo + "\n") + context + "\n\n" + originalError.message);
   err.name = originalError.name;
+  err.cause = originalError;
   throw err;
 }
 function readFile(path$1) {
@@ -27613,8 +27613,8 @@ function compileToString(str, options) {
   const compileBody$1 = this.compileBody;
   const buffer = this.parse.call(this, str);
   let res = `${config.functionHeader}
-let include = (template, data) => this.render(template, data, options);
-let includeAsync = (template, data) => this.renderAsync(template, data, options);
+let include = (__eta_t, __eta_d) => this.render(__eta_t, {...${config.varName}, ...(__eta_d ?? {})}, options);
+let includeAsync = (__eta_t, __eta_d) => this.renderAsync(__eta_t, {...${config.varName}, ...(__eta_d ?? {})}, options);
 
 let __eta = {res: "", e: this.config.escapeFunction, f: this.config.filterFunction${config.debug ? ', line: 1, templateStr: "' + str.replace(/\\|"/g, "\\$&").replace(/\r\n|\n|\r/g, "\\n") + '"' : ""}};
 
@@ -27622,6 +27622,8 @@ function layout(path, data) {
   __eta.layout = path;
   __eta.layoutData = data;
 }${config.debug ? "try {" : ""}${config.useWith ? "with(" + config.varName + "||{}){" : ""}
+
+function ${config.outputFunctionName}(s){__eta.res+=s;}
 
 ${compileBody$1.call(this, buffer)}
 if (__eta.layout) {
@@ -27701,6 +27703,7 @@ var defaultConfig = {
   debug: false,
   escapeFunction: XMLEscape,
   filterFunction: (val) => String(val),
+  outputFunctionName: "output",
   functionHeader: "",
   parse: {
     exec: "",
