@@ -37,7 +37,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "1.11.1",
+    "@actions/core": "2.0.0",
     "@date-fns/utc": "2.1.1",
     "date-fns": "4.1.0",
     "dotenv": "17.2.3",
@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
-    "@types/node": "^24.10.1",
+    "@types/node": "^24.10.2",
     "@vitest/coverage-v8": "^4.0.15",
     "esbuild": "^0.27.1",
     "eslint": "^9.39.1",
@@ -58,7 +58,7 @@
     "prettier": "^3.7.4",
     "prettier-eslint": "^16.4.2",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.48.1",
+    "typescript-eslint": "^8.49.0",
     "vitest": "^4.0.13"
   }
 }
