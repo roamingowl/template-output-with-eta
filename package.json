@@ -45,20 +45,20 @@
     "yaml": "2.8.2"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.1",
+    "@eslint/js": "^9.39.2",
     "@types/node": "^24.10.2",
-    "@vitest/coverage-v8": "^4.0.15",
-    "esbuild": "^0.27.1",
-    "eslint": "^9.39.1",
+    "@vitest/coverage-v8": "^4.0.17",
+    "esbuild": "^0.27.2",
+    "eslint": "^9.39.2",
     "eslint-plugin-import": "^2.32.0",
     "generate-license-file": "^4.1.1",
     "globals": "^16.5.0",
     "markdownlint": "^0.40.0",
     "markdownlint-cli2": "^0.20.0",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.0",
     "prettier-eslint": "^16.4.2",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.49.0",
+    "typescript-eslint": "^8.53.0",
     "vitest": "^4.0.13"
   }
 }
